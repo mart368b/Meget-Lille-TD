@@ -2,34 +2,54 @@ package gfx;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import game.Game;
-
 public class Window extends JPanel {
 	
+	private BufferStrategy strategy;
 	private JFrame frame;
-	private Game game;
 	
-	public Window (int width, int height, Game game) {
+	public Window (int width, int height) {
 		super();
-		
-		this.game = game;
-		// create frame
 		frame = new JFrame();
+		// create frame
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//frame.setResizable(false);
+		frame.setVisible(true);
 		frame.setResizable(false);
 		
 		// set display dimenstions
-		this.setPreferredSize(new Dimension(width, height));
+		setPreferredSize(new Dimension(width, height));
 		frame.add(this);
+		//frame.add(this);
+		frame.pack();
+		frame.createBufferStrategy(2);
+		strategy = frame.getBufferStrategy();
 	}
 	
-	@Override
-	public void paintComponent (Graphics g) {
-		game.render((Graphics2D) g);
+	public Graphics getDrawGraphics() {
+		return strategy.getDrawGraphics();
+	}
+	
+	public boolean strategyContentsRestored() {
+		return strategy.contentsRestored();
+	}
+	
+	public boolean strategyContentsLost() {
+		return strategy.contentsLost();
+	}
+
+	public void showStrategy() {
+		strategy.show();
+	}
+	
+	public int getMenuBarHeight() {
+		return frame.getHeight() - this.getHeight();
+	}
+	public int getMenuBarWidth() {
+		return frame.getWidth() - this.getWidth();
 	}
 }

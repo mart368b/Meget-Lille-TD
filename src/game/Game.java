@@ -1,6 +1,6 @@
 package game;
 
-import java.awt.Graphics2D;
+import java.awt.Graphics;
 
 import gfx.Window;
 
@@ -17,12 +17,17 @@ public class Game{
 	
 	public Game() {
 		initDisplay();
+		loadResources();
 		initMap();		
 		run();
 	}
 	
 	public void initDisplay() {
-		window = new Window(400, 400, this);		
+		window = new Window(1000, 1000);	
+	}
+	
+	public void loadResources() {
+		
 	}
 	
 	// add initiate map
@@ -62,7 +67,7 @@ public class Game{
             	timer = timer - ONE_SECOND;
 	        }
             
-            window.repaint();
+            render();
             renders++;
             
             long waitUntil = lt + ONE_SECOND/tps;
@@ -73,12 +78,23 @@ public class Game{
     }
 
 	public void tick(double dt) {
-		// do movement
+		// do movement here
+		// called once every 60 second
 		
 	}
 	
-	public void render(Graphics2D g) {
-		// draw here
+	public void render() {
+			Graphics g = window.getDrawGraphics();
+			g.translate(window.getMenuBarWidth()/2, window.getMenuBarHeight() - window.getMenuBarWidth()/2);
+			
+			// draw here
+			// (0,0) in top left corner
+			
+			g.dispose();
+			window.showStrategy();
+		
+		
+		// called as often as possible
 		
 	}
 }
