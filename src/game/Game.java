@@ -1,20 +1,25 @@
 package game;
 
-import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.util.ArrayList;
 
 import config.Configuration;
-import game.level.Map;
+import game.entities.Entity;
+import game.entities.enemies.Classic;
 import gfx.Window;
+import gfx.sprites.SpriteManager;
 
 public class Game{
 	
-	private Configuration config = new Configuration("config");
+	public static Configuration config = new Configuration("config");
 	
 	public int tps = config.getInt("graphics.tps");
 	
     public final int ONE_SECOND = 1000000000;
     private int outputRate = 20;
 	private Window window;
+	
+	private ArrayList<Entity> entities = new ArrayList<Entity>();
 
 	public static void main(String[] args) {
 		new Game();
@@ -34,13 +39,15 @@ public class Game{
 	
 	public void loadResources() {
 		
-		Map m = new Map("testmap");
+		//Map m = new Map("testmap");
 		
+		
+		new SpriteManager();
 	}
 	
 	// add initiate map
 	public void initMap() {
-		
+		entities.add(new Classic());
 	}
 	
 	// main game loop
@@ -88,14 +95,19 @@ public class Game{
 	public void tick(double dt) {
 		// do movement here
 		// called once every 60 second
-		
+		for(Entity ent : entities){
+			ent.tick();
+		}
 	}
 	
 	public void render() {
-			Graphics g = window.getDrawGraphics();
+			Graphics2D g = (Graphics2D) window.getDrawGraphics();
 			g.translate(window.getMenuBarWidth()/2, window.getMenuBarHeight() - window.getMenuBarWidth()/2);
 			
 			// draw here
+			for(Entity ent : entities){
+				ent.render(g);
+			}
 			// (0,0) in top left corner
 			
 			g.dispose();

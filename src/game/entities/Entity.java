@@ -1,9 +1,9 @@
 package game.entities;
 
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 
-import javax.imageio.ImageIO;
+import gfx.sprites.Animation;
+import gfx.sprites.Sprite;
 
 /**
  * 
@@ -13,20 +13,30 @@ import javax.imageio.ImageIO;
  */
 public class Entity {
 	
+	private Animation animation;
+	
 	private int health;
+	private int speed;
 	private int x, y;
 	
 	private boolean alive;
 	
-	public Entity(int health){
-		
+	public Entity(Sprite sprite, int health, int speed, int animationSpeed){
+		this.animation = new Animation(sprite.getFrames(), animationSpeed);
 		this.health = health;
+		this.speed = speed;
 		this.alive = true;
+		this.x = 0;
+		this.y = 0;
 	}
 	
-	public void tick(){}
+	public void tick(){
+		animation.tick();
+	}
 	
-	public void render(Graphics2D g){}
+	public void render(Graphics2D g){
+		animation.render(g, x, y);
+	}
 	
 	public void hit(int damage){
 		if((health -= damage) <= 0){

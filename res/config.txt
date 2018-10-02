@@ -2,3 +2,7 @@ graphics:
 	width: 1000
 	height: 1000
 	tps: 60
+classic:
+	health: 50
+	speed: 60
+	animationspeed: 20
