@@ -33,6 +33,8 @@ public class Game{
 	
 	public void loadResources() {
 		
+		Map m = new Map("testmap");
+		
 	}
 	
 	// add initiate map
