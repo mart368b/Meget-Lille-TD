@@ -3,6 +3,7 @@ package game;
 import java.awt.Graphics;
 
 import config.Configuration;
+import game.level.Map;
 import gfx.Window;
 
 public class Game{
