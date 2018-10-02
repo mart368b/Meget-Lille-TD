@@ -8,15 +8,16 @@ import javax.imageio.ImageIO;
 public class TileSet {
 	
 	public static enum TileType{PATH, BUILD};
-	public static int tileSize;
 	
+	private int tileSize;
 	private BufferedImage tileSheet;
 	private int width,
 				height;
 	
 	private ArrayList<Tile> tiles = new ArrayList<Tile>();
 	
-	public TileSet(String filePath){
+	public TileSet(String filePath, int tileSize){
+		this.tileSize = tileSize;
 		try{
 			tileSheet = ImageIO.read(getClass().getResourceAsStream(filePath));
 		}catch(Exception e){
@@ -48,5 +49,9 @@ public class TileSet {
 			}
 		}
 		return null;
+	}
+	
+	public int getTileSize(){
+		return tileSize;
 	}
 }
