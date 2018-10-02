@@ -1,0 +1,4 @@
+graphics:
+	width: 400
+	height: 400
+	tps: 60

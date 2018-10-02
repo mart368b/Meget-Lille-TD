@@ -2,11 +2,15 @@ package game;
 
 import java.awt.Graphics2D;
 
+import config.Configuration;
 import gfx.Window;
 
 public class Game{
 	
-	public int tps = 60;
+	private Configuration config = new Configuration("config");
+	
+	public int tps = config.getInt("graphics.tps");
+	
     public final int ONE_SECOND = 1000000000;
     private int outputRate = 20;
 	private Window window;
@@ -22,7 +26,8 @@ public class Game{
 	}
 	
 	public void initDisplay() {
-		window = new Window(400, 400, this);		
+		window = new Window(config.getInt("graphics.width"),
+				config.getInt("graphics.height"), this);		
 	}
 	
 	// add initiate map
@@ -79,6 +84,5 @@ public class Game{
 	
 	public void render(Graphics2D g) {
 		// draw here
-		
 	}
 }
