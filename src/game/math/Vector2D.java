@@ -28,7 +28,7 @@ public class Vector2D {
 	
 	/**
 	 * Update vector direction
-	 * @param {double} x
+	 * @param x
 	 * @param y
 	 */
 	public void setTarget(double x, double y) {
@@ -38,8 +38,8 @@ public class Vector2D {
 	
 	/**
 	 * Update vector direction
-	 * @param {Point2D} p1
-	 * @param {Point2D} p2
+	 * @param p1
+	 * @param p2
 	 */
 	public void setTarget(Point2D p1, Point2D p2) {
 		this.x = p2.getX() - p1.getX();
@@ -48,10 +48,10 @@ public class Vector2D {
 	
 	/**
 	 * Update vector direction
-	 * @param {double} x0
-	 * @param {double} y0
-	 * @param {double} x1
-	 * @param {double} y1
+	 * @param x0
+	 * @param y0
+	 * @param x1
+	 * @param y1
 	 */
 	public void setTarget(double x0, double y0, double x1, double y1) {
 		this.x = x1-x0;
@@ -59,7 +59,7 @@ public class Vector2D {
 	}
 
 	/**
-	 * @return {double} magnitude of vector 
+	 * @return magnitude of vector 
 	 */
 	public double getMagnitude() {
 		return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
@@ -84,7 +84,7 @@ public class Vector2D {
 	
 	/**
 	 * Scale the vector by a konstant
-	 * @param {double} k - Kontanst to be scaled with
+	 * @param k - Kontanst to be scaled with
 	 */
 	public void scale(double k) {
 		x *= k;
@@ -113,17 +113,17 @@ public class Vector2D {
 	
 	/**
 	 * Get the Vector as a string representation
-	 * @return {String} output represented as: "( x, y)"
+	 * @return output represented as: "( x, y)"
 	 */
 	public String toString() {
-		return "x: " + Double.toString(x) + ", y: " + Double.toString(y);
+		return "( " + String.format("%.2f", x) + ", " + String.format("%.2f", y) + ")";
 	}
 	
 	/**
 	 * Render vector based on a point of origin
-	 * @param {Graphics2D} g2
-	 * @param {double} x0
-	 * @param {double} y0
+	 * @param g2
+	 * @param x0
+	 * @param y0
 	 */
 	public void draw(Graphics2D g2, double x0, double y0) {
 		g2.draw(new Line2D.Double(x0, y0, x0 + x, y0 + y));

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import config.Configuration;
 import game.entities.Entity;
 import game.entities.enemies.Classic;
+import game.level.Map;
 import gfx.Window;
 import gfx.sprites.SpriteManager;
 
@@ -39,8 +40,7 @@ public class Game{
 	
 	public void loadResources() {
 		
-		//Map m = new Map("testmap");
-		
+		Map m = new Map("testmap2");
 		
 		new SpriteManager();
 	}

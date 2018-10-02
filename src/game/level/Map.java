@@ -1,54 +1,68 @@
 package game.level;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class Map {
 	
-	private int width, height;
-	private String[] mapData;
-	private ArrayList<int[]> spawnPoints = new ArrayList<int[]>();
+	public static final char SPAWNTILE = 'X';
+	// to get symbols either look at map files or use https://codepoints.net/U+XXXX
+	// where XXXX is the number/letters
+	// vertical line
+	public static final char VERTICALPATH = '|';
+	// horizontal line
+	public static final char HORIZONTALPATH = '\u2500';
+	public static final char JUNCTION = '+';
+	/*
+	 * using outwards direction the top left corner of a cube
+	 * would be called right - down
+	 * but people walking along the lines would enter in the opposite direction
+	 * so either go left or go up
+	 */
+	// left - down
+	public static final char CORNER1 = '\u2510';
+	// right - down
+	public static final char CORNER2 = '\u250C';
+	// left - up
+	public static final char CORNER3 = '\u2518';
+	// right - up
+	public static final char CORNER4 = '\u2514';
+	public static final char SPLITTER = 'V';
 	
-	private static final String SPAWNTILE = "X"; 
-	private static final String HORIZONTALPATH = "-";
-	private static final String SPLITPATH = "+";
+	private int width, height;
+	private char[] mapData;
+	private ArrayList<int[]> spawnPoints = new ArrayList<int[]>();
+	private PathFinder pathFinder;
 	
 	public Map(String fileName) {
-		//get BufferedReader
-		loadMap(fileName);		
-		loadSpawnPoints();		
+		// create map
+		loadMap(fileName);
+		// generate enemy spawn and pathing
+		loadSpawnPoints();	
 	}
 
 	private void loadMap(String fileName) {
-		InputStream stream = this.getClass().getResourceAsStream("/map/" + fileName + ".map");
-		InputStreamReader streamreader = new InputStreamReader(stream);
-		BufferedReader reader = new BufferedReader(streamreader);
 		
 		try {
-			//get first line
-			String line = reader.readLine().trim();
+			MapReader reader = new MapReader(fileName);
 			
-			//set width height
-			width = Character.getNumericValue(line.charAt(0));
-			height = Character.getNumericValue(line.charAt(2));
+			width = reader.getWidth();
+			height = reader.getHeight();
 			
-			String data = "";
-			while ((line = reader.readLine()) != null) {
-				line = line.trim();
-				data += line + " ";
-			}
-			mapData = data.split(" ");
-			reader.close();
+			mapData = reader.getMapData();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 
 	private void loadSpawnPoints() {
+		// find spawn points
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
 				if (getTile(x, y) == SPAWNTILE) {
@@ -56,9 +70,14 @@ public class Map {
 				}
 			}
 		}
+		
+		// find all defined paths through the map
+		pathFinder = new PathFinder(spawnPoints.get(0)[0], spawnPoints.get(0)[1], this);
+		
+		// use pathFinder.nextPath() to get the next path (it just cycles through them)
 	}
 	
-	public String getTile(int x, int y) {
+	public char getTile(int x, int y) {
 		return mapData[x + y * width];
 	}
 }
