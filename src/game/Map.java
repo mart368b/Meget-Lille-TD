@@ -22,19 +22,22 @@ public class Map {
 			
 			//set width height
 			width = Character.getNumericValue(line.charAt(0));
-			System.out.println(width);
 			height = Character.getNumericValue(line.charAt(2));
 			
 			mapData = new int[width * height];
 			
 			for (int y = 0; y < height; y++) {
-				System.out.println(y);
 				line = reader.readLine();
+				if (line == null) {
+					throw new IOException("Given map height is not the same as given height");
+				}
 				for (int x = 0; x < width; x++) {
-					System.out.println(line.charAt(x * 2));
+					if (x > line.length()) {
+						throw new IOException("Given map widthh is not the same as given width");
+					}
 					mapData[x + y * width] = Character.getNumericValue(line.charAt( x * 2));
 				}
-			}
+			}			
 			reader.close();
 		} catch (IOException e) {
 			e.printStackTrace();
