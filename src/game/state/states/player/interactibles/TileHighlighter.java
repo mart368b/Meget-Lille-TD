@@ -60,18 +60,26 @@ public class TileHighlighter {
 	public void render(Graphics2D g2) {
 		if (visible) {
 			g2.setColor(currentColor);
-			int screenWidth = width * Map.TILESIZE;
-			int screenHeight = height * Map.TILESIZE;
+			int screenWidth = getScreenWidth();
+			int screenHeight = getScreenHeight();
 			g2.drawRect(getScreenX() - 1, getScreenY() - 1, screenWidth + 1, screenHeight + 1);
 		}
 	}
 	
 	public int getScreenX() {
-		return x * Map.TILESIZE - 1;
+		return x * Map.TILESIZE;
 	}
 	
 	public int getScreenY() {
-		return y * Map.TILESIZE - (height * Map.TILESIZE)/2;
+		return y * Map.TILESIZE;
+	}
+	
+	public int getScreenWidth() {
+		return width * Map.TILESIZE;
+	}
+	
+	public int getScreenHeight() {
+		return height * Map.TILESIZE;
 	}
 	
 	private Color getColor(double t) {
