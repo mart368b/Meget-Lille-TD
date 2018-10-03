@@ -268,7 +268,7 @@ public class PathFinder {
 	}
 
 	private void addPathPoint(int id, int x, int y) {
-		Point2D p = new Point2D(x, y);
+		Point2D p = new Point2D(x * Map.TILESIZE, y * Map.TILESIZE);
 		paths.get(id).addPoint(p);
 	}
 }

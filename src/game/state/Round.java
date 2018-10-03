@@ -12,55 +12,51 @@ import game.level.PathFinder;
 
 public class Round {
 
-	private int id;
+	private int id, enemyCount, releasedCount = 0;
 	private Map map;
-	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
-	private ArrayList<Enemy> initialEnemies = new ArrayList<Enemy>();
-	private Enemy ent;
+	private Enemy[] enemyTypes;
+	private int currentEnemy = 0;
 	
 	private int winbonus;
 	
-	public Round(int roundnumber, Map map, Enemy ent){
+	public Round(int roundnumber, Map map, Enemy[] ent, int enemyCount){
 		this.id = roundnumber;
+		this.enemyCount = enemyCount;
 		this.map = map;
-		this.ent = ent;
-		populate();
+		this.enemyTypes = ent;
 	}
 	
 	/**
 	 * Spawn a Basic enemy on every spawn point
 	 */
-	private void populate(){
-		int multiplier = Game.config.getInt("rounds.multiplier");
+	public Enemy[] getWave(){
+		if (releasedCount >= enemyCount - 1) {
+			return null;
+		}
 		//Get spawnlocation from map and spawn enemies
 		Iterator<int[]> ite = map.getSpawnPointIterator();
-		int[] spawnPoint;
 		// go over all spawn points
+		int[] spawnPoint;
+		Enemy[] enemies = new Enemy[map.getSpawnPointCount()];
+		int i = 0;
 		while (ite.hasNext()) {
 			spawnPoint = ite.next();
 			// get path from that spawnpoint
 			PathFinder paths = map.getPathFinder(spawnPoint);
-			for(int i = 0; i < id*multiplier; i++){
-				// create enemy with a specific path (by cycling throught them)
-				Enemy newEnt = ent.clone(paths.nextPath());
-				enemies.add(newEnt);
-				initialEnemies.add(newEnt);
+			Enemy newEnt = enemyTypes[currentEnemy++].clone(paths.nextPath());
+			enemies[i++] = newEnt;
+			if (++releasedCount >= enemyCount - 1) {
+				return enemies;
 			}
 		}
+		if (currentEnemy >= enemyTypes.length) {
+			currentEnemy = 0;
+		}
+		return enemies;
 	}
 	
-	public void reset() {
-		enemies = new ArrayList<Enemy>();
-		for (Enemy ent: initialEnemies) {
-			enemies.add(ent.clone());
-		}
-	}
-	
-	public Enemy getNextEnemy() {
-		if (enemies.size() == 0) {
-			return null;
-		}
-		return enemies.remove(0); 
+	public boolean reachedEnd() {
+		return releasedCount >= enemyCount - 1;
 	}
 	
 	//Track and see if all enemies are killed

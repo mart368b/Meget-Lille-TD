@@ -6,10 +6,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import game.entities.enemies.BasicEnemy;
+import game.entities.enemies.Enemy;
+import game.state.Round;
 import gfx.tiles.Tile;
 import gfx.tiles.TileSetManager;
 
 public class Map {
+	
+	public static final int TILESIZE = 32;
 	
 	public static final char SPAWNTILE = 'X';
 	public static final char ENDTILE = 'E';
@@ -22,12 +27,7 @@ public class Map {
 	
 	public static final char JUNCTION = '+';
 	public static final char SPLITTER = 'V';
-	/*
-	 * NOTE: the following are using outwards direction e.g a corner represented as the top left corner of a cube
-	 * would be called right - down
-	 * But take note people walking on the line would enter in the opposit direction
-	 * so either go enter going left or upwards
-	 */
+	
 	// left - down
 	public static final char CORNER1 = '\u2510';
 	// right - down
@@ -135,6 +135,10 @@ public class Map {
 	
 	public int[] getSpawnPoint(int i) {
 		return spawnPoints.get(i);
+	}
+	
+	public int getSpawnPointCount() {
+		return spawnPoints.size();
 	}
 	
 	public PathFinder getPathFinder(int[] spawnPoint) {

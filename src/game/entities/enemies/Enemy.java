@@ -63,7 +63,7 @@ public class Enemy extends Entity {
 	 * move Enemy
 	 */
 	public void move() {
-		progress += speed/Game.tps;
+		progress += (speed + 0.)/Game.tps;
 		moveTo(path.getPosition(progress));
 		
 		if (progress > path.getLength()) {
@@ -77,6 +77,14 @@ public class Enemy extends Entity {
 	 */
 	public boolean reachedEnd() {
 		return end;
+	}
+	
+	public boolean isDead() {
+		return !alive;
+	}
+	
+	public void kill() {
+		alive = false;
 	}
 	
 	public boolean hasPath() {
