@@ -28,10 +28,10 @@ public class TileSet {
 		
 		int id = 0;
 		
-		for(int row = 0; row < width/tileSize; row++){
-			for(int col = 0; col < height/tileSize; col++){
-				BufferedImage subImage = tileSheet.getSubimage(tileSize * row, 
-						tileSize * col, tileSize, tileSize);
+		for(int row = 0; row < height/tileSize; row++){
+			for(int col = 0; col < width/tileSize; col++){
+				BufferedImage subImage = tileSheet.getSubimage(tileSize * col, 
+						tileSize * row, tileSize, tileSize);
 				if(row == 0){
 					tiles.add(new Tile(id, subImage, TileType.PATH));
 				}else{

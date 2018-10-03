@@ -44,7 +44,15 @@ public class level1_0 extends GameState {
 	@Override
 	public void render(Graphics2D g) {
 		//render map
-		
+		for(int x = 0; x < map.getWidth(); x++){
+			int locX = x * tileset.getTileSize();
+			for(int y = 0; y < map.getHeight(); y++){
+				int locY = y * tileset.getTileSize();
+				
+				g.drawImage(map.getTexture(map.getTile(x, y), 0).getImage(),
+						locX, locY, null);
+			}
+		}
 		//render enemies from Round Object
 	}
 

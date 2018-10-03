@@ -5,10 +5,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import gfx.tiles.Tile;
+import gfx.tiles.TileSetManager;
 
 public class Map {
 	
 	public static final char SPAWNTILE = 'X';
+	public static final char ENDTILE = 'E';
 	// to get symbols either look at map files or use https://codepoints.net/U+XXXX
 	// where XXXX is the number/letters
 	// vertical line
@@ -34,7 +36,7 @@ public class Map {
 	public static final char CORNER4 = '\u2514';
 	
 	private int width, height;
-	private char[] mapData;
+	private String[] mapData;
 	private ArrayList<int[]> spawnPoints = new ArrayList<int[]>();
 	private PathFinder[] pathFinders;
 	
@@ -64,7 +66,7 @@ public class Map {
 		// find spawn points
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
-				if (getTile(x, y) == SPAWNTILE) {
+				if (getTileC(x, y) == SPAWNTILE) {
 					spawnPoints.add(new int[] { x, y});
 				}
 			}
@@ -79,8 +81,16 @@ public class Map {
 		// use pathFinder.nextPath() to get the next path (it just cycles through them)
 	}
 	
-	public char getTile(int x, int y) {
+	public char toChar(String s){
+		return s.charAt(0);
+	}
+	
+	public String getTile(int x, int y) {
 		return mapData[x + y * width];
+	}
+	
+	public char getTileC(int x, int y) {
+		return toChar(mapData[x + y * width]);
 	}
 	
 	public void render(Graphics2D g2) {
@@ -97,14 +107,23 @@ public class Map {
 	
 	//IDK if this is the correct way to get data from this class .-.
 	
-	public Tile getTexture(char c, int tilesetID){
-		//TODO
-		return null;
+	public Tile getTexture(String s, int tilesetID){
+		
+		char c = toChar(s);
+		if(c == SPAWNTILE){
+			return TileSetManager.getTileset(tilesetID).getTile(2);
+		}else if(c == ENDTILE){
+			return TileSetManager.getTileset(tilesetID).getTile(3);
+		}else if((c == VERTICALPATH) || (c == HORIZONTALPATH) || (c == CORNER1)
+				 || (c == CORNER2) || (c == CORNER3) || (c == CORNER4)){
+			return TileSetManager.getTileset(tilesetID).getTile(0);
+		}else{
+			return TileSetManager.getTileset(tilesetID).getTile(Integer.parseInt(s));
+		}
 	}
 	
 	
-	@Deprecated public char[] getMapData() {
-		
+	@Deprecated public String[] getMapData() {
 		return mapData;
 	}
 

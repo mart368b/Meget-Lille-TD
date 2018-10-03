@@ -42,7 +42,7 @@ public class Game{
 	
 	public void loadResources() {
 		
-		Map m = new Map("testmap2");
+		//Map m = new Map("testmap2");
 		
 		//load all textures
 		new SpriteManager();

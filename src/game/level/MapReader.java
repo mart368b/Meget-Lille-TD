@@ -12,7 +12,7 @@ import java.net.URL;
 public class MapReader {
 	
 	private int width, height;
-	private char[] mapData;
+	private String[] mapData;
 	
 	public MapReader(String fileName) throws IOException {
 		URL u = this.getClass().getResource("/map/" + fileName + ".map");
@@ -21,14 +21,16 @@ public class MapReader {
 		BufferedReader reader = new BufferedReader(streamreader);
 		
 		//get first line
-		String line = reader.readLine().trim();
+		String infos = reader.readLine();
+		String[] info = infos.trim().split(" ");
 		
 		//set width height
-		width = Character.getNumericValue(line.charAt(1));
-		height = Character.getNumericValue(line.charAt(3));
+		width = Integer.parseInt(info[0]);
+		height = Integer.parseInt(info[1]);
 		
 		//get string array
 		String data = "";
+		String line;
 		while ((line = reader.readLine()) != null) {
 			line = line.trim();
 			data += line + " ";
@@ -36,9 +38,9 @@ public class MapReader {
 		String[] stringData = data.split(" ");
 		
 		//convert to char array
-		mapData = new char[stringData.length];
+		mapData = new String[stringData.length];
 		for (int i = 0; i < mapData.length; i++) {
-			mapData[i] = stringData[i].charAt(0);
+			mapData[i] = stringData[i];
 		}
 		
 		reader.close();
@@ -53,7 +55,7 @@ public class MapReader {
 		return height;
 	}
 	
-	public char[] getMapData() {
+	public String[] getMapData() {
 		return mapData;
 	}
 

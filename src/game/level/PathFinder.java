@@ -15,7 +15,7 @@ public class PathFinder {
 	public PathFinder(int x0, int y0, Map map) {
 		// check if there is tile to the left of x0
 		if (x0 > 1) {
-			char leftTile = map.getTile(x0 - 1, y0);
+			char leftTile = map.getTileC(x0 - 1, y0);
 			// check if moving onto tile is considered a valid move
 			if (leftTile == Map.HORIZONTALPATH || leftTile == map.CORNER2 || leftTile == map.CORNER4) {
 				//create new path runner
@@ -25,7 +25,7 @@ public class PathFinder {
 		}
 		// check if there is tile to the right of x0
 		if (x0 < map.getWidth() - 2) {
-			char rightTile = map.getTile(x0 + 1, y0);
+			char rightTile = map.getTileC(x0 + 1, y0);
 			// check if moving onto tile is considered a valid move
 			if (rightTile == Map.HORIZONTALPATH || rightTile == map.CORNER1 || rightTile == map.CORNER3) {
 				//create new path runner
@@ -35,7 +35,7 @@ public class PathFinder {
 		}
 		// check if there is tile to above of y0
 		if (y0 > 1) {
-			char upTile = map.getTile(x0, y0 - 1);
+			char upTile = map.getTileC(x0, y0 - 1);
 			// check if moving onto tile is considered a valid move
 			if (upTile == Map.VERTICALPATH || upTile == map.CORNER1 || upTile == map.CORNER2) {
 				//create new path runner
@@ -45,7 +45,7 @@ public class PathFinder {
 		}
 		// check if there is tile below y0
 		if (y0 < map.getHeight() -2) {
-			char downTile = map.getTile(x0, y0 + 1);
+			char downTile = map.getTileC(x0, y0 + 1);
 			// check if moving onto tile is considered a valid move
 			if (downTile == Map.VERTICALPATH || downTile == map.CORNER3 || downTile == map.CORNER4) {
 				//create new path runner
@@ -81,7 +81,7 @@ public class PathFinder {
 		addPathPoint(id, x, y);
 		int nx = x + vx;
 		int ny = y + vy;
-		char tile = map.getTile(nx, ny);
+		char tile = map.getTileC(nx, ny);
 		// moving vertical
 		if (vx == 0) {
 			collideVertical(tile, nx, ny, vx, vy, id, map);
