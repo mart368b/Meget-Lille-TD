@@ -1,12 +1,14 @@
 package game.state;
 
 import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
 
-import game.state.states.level1_0;
 import game.state.states.menu_state;
+import game.state.states.input.BasicMouseInput;
+import game.state.states.player.levelPlayer;
 
 
-public class StateManager {
+public class StateManager implements BasicMouseInput{
 
 	private GameState gamestates[];
 	private StateTypes currentstate;
@@ -21,7 +23,7 @@ public class StateManager {
 		if(state == StateTypes.MENU){
 			gamestates[state.getValue()] = new menu_state(this);
 		}else if(state == StateTypes.LEVEL1_0){
-			gamestates[state.getValue()] = new level1_0(this);
+			gamestates[state.getValue()] = new levelPlayer(this);
 		}
 		//New states will get added here
 	}
@@ -50,12 +52,19 @@ public class StateManager {
 		}
 		gamestates[currentstate.getValue()].render(g);
 	}
-	
-	public void KeyPressed(int pressed){
-		gamestates[currentstate.getValue()].keyPressed(pressed);
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		gamestates[currentstate.getValue()].mousePressed(e);;
 	}
-	
-	public void KeyReleased(int pressed){
-		gamestates[currentstate.getValue()].keyReleased(pressed);
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		gamestates[currentstate.getValue()].mouseMoved(e);
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		gamestates[currentstate.getValue()].mouseExited(e);;
 	}
 }

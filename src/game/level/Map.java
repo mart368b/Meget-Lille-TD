@@ -8,7 +8,7 @@ import java.util.Iterator;
 
 import game.entities.enemies.BasicEnemy;
 import game.entities.enemies.Enemy;
-import game.state.Round;
+import game.state.states.player.Round;
 import gfx.tiles.Tile;
 import gfx.tiles.TileSetManager;
 
@@ -56,6 +56,7 @@ public class Map {
 			MapReader reader = new MapReader(fileName);
 			
 			width = reader.getWidth();
+			System.out.println(width);
 			height = reader.getHeight();
 			
 			mapData = reader.getMapData();

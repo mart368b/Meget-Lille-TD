@@ -22,10 +22,12 @@ public class Window extends JPanel {
 		frame.setResizable(false);
 		
 		// set display dimenstions
-		setPreferredSize(new Dimension(width, height));
 		frame.add(this);
+		setPreferredSize(new Dimension(width, height));
 		//frame.add(this);
 		frame.pack();
+		frame.pack();
+		System.out.println(this.getSize().toString());
 		frame.createBufferStrategy(2);
 		strategy = frame.getBufferStrategy();
 	}

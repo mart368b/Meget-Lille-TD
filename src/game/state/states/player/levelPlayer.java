@@ -1,27 +1,30 @@
-package game.state.states;
+package game.state.states.player;
 
 import java.awt.Graphics2D;
-
+import java.awt.event.MouseEvent;
 import game.Game;
 import game.entities.enemies.BasicEnemy;
 import game.entities.enemies.Enemy;
 import game.level.Map;
 import game.state.GameState;
-import game.state.Round;
 import game.state.StateManager;
 import game.state.StateTypes;
+import game.state.states.EnemyHandler;
+import game.state.states.player.interactibles.TileHighlighter;
 import gfx.tiles.TileSet;
 import gfx.tiles.TileSetManager;
 
-public class level1_0 extends GameState {
+public class levelPlayer extends GameState {
 	
 	private Map map;
 	private TileSet tileset;
 	private Round[] rounds;
-	private int currentRound, sleepTime = 5, time = 0;
+	private static final int sleepTime = 10;
+	private int currentRound, time = 0;
 	private EnemyHandler handler = new EnemyHandler();
+	private TileHighlighter higlighter = new TileHighlighter();
 
-	public level1_0(StateManager sm) {
+	public levelPlayer(StateManager sm) {
 		this.sm = sm;
 		init();
 	}
@@ -49,9 +52,9 @@ public class level1_0 extends GameState {
 			}
 		}
 		handler.tick();
+		higlighter.tick();
 		//whenever everything is over
 		//close
-		
 	}
 	
 	public void close() {
@@ -72,15 +75,27 @@ public class level1_0 extends GameState {
 		}
 		//render enemies from Round Object
 		handler.render(g2);
-	}
-
-	@Override
-	public void keyPressed(int k) {
 		
+		higlighter.render(g2);
 	}
 
 	@Override
-	public void keyReleased(int k) {
+	public void mousePressed(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		if (e.getX() > 30 * Map.TILESIZE) {
+			higlighter.setVisible(false);
+		}else {
+			higlighter.setVisible(true);
+			higlighter.moveTo(e.getX(), e.getY());
+		}
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		higlighter.setVisible(false);
 		
 	}
 }

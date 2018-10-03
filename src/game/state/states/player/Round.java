@@ -1,4 +1,4 @@
-package game.state;
+package game.state.states.player;
 
 import java.util.ArrayList;
 import java.util.Iterator;
