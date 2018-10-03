@@ -17,11 +17,12 @@ public class MapReader {
 	public MapReader(String fileName) throws IOException {
 		URL u = this.getClass().getResource("/map/" + fileName + ".map");
 		FileInputStream stream = new FileInputStream(new File(u.getPath()));
-		InputStreamReader streamreader = new InputStreamReader(stream, "UTF8");
+		InputStreamReader streamreader = new InputStreamReader(stream, "UTF-8");
 		BufferedReader reader = new BufferedReader(streamreader);
 		
 		//get first line
 		String infos = reader.readLine();
+		infos = infos.substring(1, infos.length());
 		String[] info = infos.trim().split(" ");
 		
 		//set width height

@@ -13,7 +13,7 @@ public class TileSetManager {
 	 * The new tilesheet needs an id and then the tilesheet.
 	 */
 	
-	public TileSetManager(){
+	static {
 		sets.put(0, new TileSet("/tilesets/level1_0_tilesheet.png", 32));
 	}
 	

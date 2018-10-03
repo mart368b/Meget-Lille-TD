@@ -13,6 +13,7 @@ public class Enemy extends Entity {
 	
 	private int health;
 	private int speed;
+	private Sprite sprite;
 	private WalkingPath path;
 	
 	protected boolean alive = true, end = false;
@@ -25,6 +26,7 @@ public class Enemy extends Entity {
 		super(x, y, sprite, animationSpeed);
 		this.health = health;
 		this.speed = speed;
+		this.sprite = sprite; 
 	}
 	
 	/**
@@ -61,7 +63,7 @@ public class Enemy extends Entity {
 	 * move Enemy
 	 */
 	public void move() {
-		progress += speed/Game.tps;
+		progress += (speed + 0.)/Game.tps;
 		moveTo(path.getPosition(progress));
 		
 		if (progress > path.getLength()) {
@@ -77,6 +79,14 @@ public class Enemy extends Entity {
 		return end;
 	}
 	
+	public boolean isDead() {
+		return !alive;
+	}
+	
+	public void kill() {
+		alive = false;
+	}
+	
 	public boolean hasPath() {
 		return path != null;
 	}
@@ -84,5 +94,13 @@ public class Enemy extends Entity {
 	@Override
 	public void render(Graphics2D g2) {
 		super.render(g2);
+	}
+	
+	public Enemy clone() {
+		return new Enemy(sprite, path, animation.getAnimationSpeed(), health, speed);
+	}
+	
+	public Enemy clone(WalkingPath path) {
+		return new Enemy(sprite, path, animation.getAnimationSpeed(), health, speed);
 	}
 }

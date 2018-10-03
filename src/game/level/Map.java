@@ -4,7 +4,11 @@ import java.awt.Graphics2D;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
+import game.entities.enemies.BasicEnemy;
+import game.entities.enemies.Enemy;
+import game.state.states.player.Round;
 import gfx.tiles.Tile;
 import gfx.tiles.TileSetManager;
 import gfx.tiles.Unicode;
@@ -15,6 +19,8 @@ public class Map {
 	
 	public static final char SPAWNTILE = '\u27B2';
 	public static final char ENDTILE = '\u26D4';
+	public static final int TILESIZE = 32;
+	
 	// to get symbols either look at map files or use https://codepoints.net/U+XXXX
 	// where XXXX is the number/letters
 	// vertical line
@@ -24,12 +30,7 @@ public class Map {
 	
 	public static final char JUNCTION = '+';
 	public static final char SPLITTER = 'V';
-	/*
-	 * NOTE: the following are using outwards direction e.g a corner represented as the top left corner of a cube
-	 * would be called right - down
-	 * But take note people walking on the line would enter in the opposit direction
-	 * so either go enter going left or upwards
-	 */
+	
 	// left - down
 	public static final char CORNER1 = '\u2510';
 	// right - down
@@ -123,6 +124,7 @@ public class Map {
 	private int width, height;
 	private String[] mapData;
 	private ArrayList<int[]> spawnPoints = new ArrayList<int[]>();
+	private HashMap<int[], PathFinder[]> pathfinders;
 	private PathFinder[] pathFinders;
 	
 	public Map(String fileName) {
@@ -138,6 +140,7 @@ public class Map {
 			MapReader reader = new MapReader(fileName);
 			
 			width = reader.getWidth();
+			System.out.println(width);
 			height = reader.getHeight();
 			
 			mapData = reader.getMapData();
@@ -199,17 +202,29 @@ public class Map {
 		return TileSetManager.getTileset(tilesetID)
 				.getTile(code.getValue());
 	}
-	
-	
-	@Deprecated public String[] getMapData() {
-		return mapData;
-	}
 
 	public ArrayList<int[]> getSpawnPoints() {
 		return spawnPoints;
 	}
 	
-	public PathFinder getPath(int i) {
-		return pathFinders[i];
+	public Iterator<int[]> getSpawnPointIterator() {
+		return spawnPoints.iterator();
+	}
+	
+	public int[] getSpawnPoint(int i) {
+		return spawnPoints.get(i);
+	}
+	
+	public int getSpawnPointCount() {
+		return spawnPoints.size();
+	}
+	
+	public PathFinder getPathFinder(int[] spawnPoint) {
+		for(int i = 0; i < spawnPoints.size(); i++) {
+			if (spawnPoints.get(i).equals(spawnPoint)) {
+				return pathFinders[i];
+			}
+		}
+		return null;
 	}
 }

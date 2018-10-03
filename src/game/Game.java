@@ -8,6 +8,7 @@ import game.entities.Entity;
 import game.entities.enemies.BasicEnemy;
 import game.level.Map;
 import game.state.StateManager;
+import game.state.states.input.InputHandler;
 import gfx.Window;
 import gfx.sprites.SpriteManager;
 import gfx.tiles.TileSetManager;
@@ -21,6 +22,7 @@ public class Game{
     public final int ONE_SECOND = 1000000000;
     private int outputRate = 20;
 	private Window window;
+	private InputHandler handler = new InputHandler();
 	
 	private StateManager sm;
 
@@ -29,29 +31,18 @@ public class Game{
 	}
 	
 	public Game() {
+		sm = new StateManager();
+		handler.setTarget(sm);
 		initDisplay();
-		loadResources();
-		initMap();		
 		run();
 	}
 	
 	public void initDisplay() {
 		window = new Window(config.getInt("graphics.width"),
 				config.getInt("graphics.height"));
-	}
-	
-	public void loadResources() {
 		
-		//Map m = new Map("testmap2");
-		
-		//load all textures
-		new SpriteManager();
-		new TileSetManager();
-	}
-	
-	// add initiate map
-	public void initMap() {
-		sm = new StateManager();
+		window.addMouseMotionListener(handler);
+		window.addMouseListener(handler);
 	}
 	
 	// main game loop
