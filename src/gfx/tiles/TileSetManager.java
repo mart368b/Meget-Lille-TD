@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class TileSetManager {
 
-	private static HashMap<Integer, TileSet> sets = new HashMap<Integer, TileSet>();
+	private static HashMap<Integer, ImageTileSet> sets = new HashMap<Integer, ImageTileSet>();
 	
 	/**
 	 * This TileSetManager keeps track of all the different tilesets.
@@ -14,10 +14,10 @@ public class TileSetManager {
 	 */
 	
 	static {
-		sets.put(0, new TileSet("/tilesets/level1_0_tilesheet.png", 32));
+		sets.put(0, new ImageTileSet("/tilesets/level1_0_tilesheet.png", 32));
 	}
 	
-	public static TileSet getTileset(int id){
+	public static ImageTileSet getTileset(int id){
 		return sets.get(id);
 	}
 	

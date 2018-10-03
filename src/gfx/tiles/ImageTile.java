@@ -2,15 +2,15 @@ package gfx.tiles;
 
 import java.awt.image.BufferedImage;
 
-import gfx.tiles.TileSet.TileType;
+import gfx.tiles.ImageTileSet.TileType;
 
-public class Tile {
+public class ImageTile {
 
 	private int id;
 	private TileType type;
 	private BufferedImage image;
 	
-	public Tile(int id, BufferedImage image, TileType type){
+	public ImageTile(int id, BufferedImage image, TileType type){
 		this.id = id;
 		this.image = image;
 		this.type = type;

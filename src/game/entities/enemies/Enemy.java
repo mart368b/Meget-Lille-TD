@@ -4,11 +4,11 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import game.Game;
-import game.entities.Entity;
+import game.entities.AnimatedEntity;
 import game.level.WalkingPath;
 import gfx.sprites.Sprite;
 
-public class Enemy extends Entity {
+public class Enemy extends AnimatedEntity {
 	
 	private int health;
 	private int speed;

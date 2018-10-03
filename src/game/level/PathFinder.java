@@ -2,6 +2,8 @@ package game.level;
 
 import java.util.ArrayList;
 
+import game.entities.tiles.Tile;
+import game.entities.tiles.TileLibrary;
 import game.math.Point2D;
 
 public class PathFinder {
@@ -15,9 +17,9 @@ public class PathFinder {
 	public PathFinder(int x0, int y0, Map map) {
 		// check if there is tile to the left of x0
 		if (x0 > 1) {
-			char leftTile = map.getTileC(x0 - 1, y0);
+			Tile leftTile = map.getTile(x0 - 1, y0);
 			// check if moving onto tile is considered a valid move
-			if (leftTile == Map.HORIZONTALPATH || leftTile == map.CORNER2 || leftTile == map.CORNER4) {
+			if (leftTile.equals(TileLibrary.HORIZONTALPATH.getValue()) || leftTile.equals(TileLibrary.CORNER2.getValue()) || leftTile.equals(TileLibrary.CORNER4.getValue())) {
 				//create new path runner
 				paths.add(new WalkingPath());
 				move(x0, y0, -1, 0, paths.size() - 1, map);
@@ -25,9 +27,9 @@ public class PathFinder {
 		}
 		// check if there is tile to the right of x0
 		if (x0 < map.getWidth() - 2) {
-			char rightTile = map.getTileC(x0 + 1, y0);
+			Tile rightTile = map.getTile(x0 + 1, y0);
 			// check if moving onto tile is considered a valid move
-			if (rightTile == Map.HORIZONTALPATH || rightTile == map.CORNER1 || rightTile == map.CORNER3) {
+			if (rightTile.equals(TileLibrary.HORIZONTALPATH.getValue()) || rightTile.equals(TileLibrary.CORNER1.getValue()) || rightTile.equals(TileLibrary.CORNER3.getValue())) {
 				//create new path runner
 				paths.add(new WalkingPath());
 				move(x0, y0, 1, 0, paths.size() - 1, map);
@@ -35,9 +37,9 @@ public class PathFinder {
 		}
 		// check if there is tile to above of y0
 		if (y0 > 1) {
-			char upTile = map.getTileC(x0, y0 - 1);
+			Tile upTile = map.getTile(x0, y0 - 1);
 			// check if moving onto tile is considered a valid move
-			if (upTile == Map.VERTICALPATH || upTile == map.CORNER1 || upTile == map.CORNER2) {
+			if (upTile.equals(TileLibrary.VERTICALPATH.getValue()) || upTile.equals(TileLibrary.CORNER1.getValue()) || upTile.equals(TileLibrary.CORNER2.getValue())) {
 				//create new path runner
 				paths.add(new WalkingPath());
 				move(x0, y0, 0, -1, paths.size() - 1, map);
@@ -45,9 +47,9 @@ public class PathFinder {
 		}
 		// check if there is tile below y0
 		if (y0 < map.getHeight() -2) {
-			char downTile = map.getTileC(x0, y0 + 1);
+			Tile downTile = map.getTile(x0, y0 + 1);
 			// check if moving onto tile is considered a valid move
-			if (downTile == Map.VERTICALPATH || downTile == map.CORNER3 || downTile == map.CORNER4) {
+			if (downTile.equals(TileLibrary.VERTICALPATH.getValue()) || downTile.equals(TileLibrary.CORNER3.getValue()) || downTile.equals(TileLibrary.CORNER4.getValue())) {
 				//create new path runner
 				paths.add(new WalkingPath());
 				move(x0, y0, 0, 1, paths.size() - 1, map);
@@ -81,7 +83,7 @@ public class PathFinder {
 		addPathPoint(id, x, y);
 		int nx = x + vx;
 		int ny = y + vy;
-		char tile = map.getTileC(nx, ny);
+		Tile tile = map.getTile(nx, ny);
 		// moving vertical
 		if (vx == 0) {
 			collideVertical(tile, nx, ny, vx, vy, id, map);
@@ -92,8 +94,8 @@ public class PathFinder {
 		}
 	}
 	
-	private void collideHorizontal(char tile, int x, int y, int vx, int vy, int id, Map map) {
-		if (tile == Map.HORIZONTALPATH || tile == Map.JUNCTION) {
+	private void collideHorizontal(Tile tile, int x, int y, int vx, int vy, int id, Map map) {
+		if (tile.equals(TileLibrary.HORIZONTALPATH.getValue()) || tile.equals(TileLibrary.JUNCTION.getValue())) {
 			// continue in the same direction
 			move(x, y, vx, vy, id, map);
 			return;
@@ -101,8 +103,8 @@ public class PathFinder {
 		collideCorner(tile, x, y, vx, vy, id, map);
 	}
 
-	private void collideVertical(char tile, int x, int y, int vx, int vy, int id, Map map) {
-		if (tile == Map.VERTICALPATH || tile == Map.JUNCTION) {
+	private void collideVertical(Tile tile, int x, int y, int vx, int vy, int id, Map map) {
+		if (tile.equals(TileLibrary.VERTICALPATH.getValue()) || tile.equals(TileLibrary.JUNCTION.getValue())) {
 			// continue in the same direction
 			move(x, y, vx, vy, id, map);
 			return;
@@ -111,8 +113,8 @@ public class PathFinder {
 	}
 	
 	// this class assume that the map is made correctly meaning that no path goes into a corner the wrong way
-	private void collideCorner(char tile, int x, int y, int vx, int vy, int id, Map map) {
-		if (tile == Map.CORNER1) {
+	private void collideCorner(Tile tile, int x, int y, int vx, int vy, int id, Map map) {
+		if (tile.equals(TileLibrary.CORNER1.getValue())) {
 			/*input
 			 * 1. - right
 			 * vx = 1
@@ -134,7 +136,7 @@ public class PathFinder {
 			 */
 			return;
 		}
-		if (tile == Map.CORNER2) {
+		if (tile.equals(TileLibrary.CORNER2.getValue())) {
 			/*input
 			 * 1. - left
 			 * vx = -1
@@ -156,7 +158,7 @@ public class PathFinder {
 			 */
 			return;
 		}
-		if (tile == Map.CORNER3) {
+		if (tile.equals(TileLibrary.CORNER3.getValue())) {
 			/*input
 			 * 1. - right
 			 * vx = 1
@@ -178,7 +180,7 @@ public class PathFinder {
 			 */
 			return;
 		}
-		if (tile == Map.CORNER4) {
+		if (tile.equals(TileLibrary.CORNER4.getValue())) {
 			/*input
 			 * 1. - left
 			 * vx = -1
@@ -203,8 +205,8 @@ public class PathFinder {
 		collideSplitter(tile, x, y, vx, vy, id, map);
 	}
 
-	private void collideSplitter(char tile, int x, int y, int vx, int vy, int id, Map map) {
-		if (tile == Map.SPLITTER) {
+	private void collideSplitter(Tile tile, int x, int y, int vx, int vy, int id, Map map) {
+		if (tile.equals(TileLibrary.SPLITTER.getValue())) {
 			
 			paths.add(paths.get(id).clone());
 			/*
@@ -268,7 +270,7 @@ public class PathFinder {
 	}
 
 	private void addPathPoint(int id, int x, int y) {
-		Point2D p = new Point2D(x * Map.TILESIZE, y * Map.TILESIZE);
+		Point2D p = new Point2D(x * Tile.TILESIZE, y * Tile.TILESIZE);
 		paths.get(id).addPoint(p);
 	}
 }

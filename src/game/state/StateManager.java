@@ -3,8 +3,11 @@ package game.state;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 
+import game.entities.enemies.BasicEnemy;
+import game.entities.enemies.Enemy;
 import game.state.states.menu_state;
 import game.state.states.input.BasicMouseInput;
+import game.state.states.player.Round;
 import game.state.states.player.levelPlayer;
 
 
@@ -23,7 +26,10 @@ public class StateManager implements BasicMouseInput {
 		if(state == StateTypes.MENU){
 			gamestates[state.getValue()] = new menu_state(this);
 		}else if(state == StateTypes.LEVEL1_0){
-			gamestates[state.getValue()] = new levelPlayer(this);
+			gamestates[state.getValue()] = new levelPlayer(this, new Round[] {
+					new Round(new Enemy[] {new BasicEnemy()}, 10),
+					new Round(new Enemy[] {new BasicEnemy()}, 10)
+			});
 		}
 		//New states will get added here
 	}

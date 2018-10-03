@@ -14,12 +14,10 @@ import gfx.sprites.Sprite;
  */
 public class Entity extends Point2D{
 	
-	protected Animation animation;
 	protected boolean active = true;
 	
-	public Entity(double x, double y, Sprite sprite, int animationSpeed){
+	public Entity(double x, double y){
 		super(x, y);
-		this.animation = new Animation(sprite.getFrames(0), animationSpeed);
 	}
 	
 	public boolean isActive() {
@@ -30,11 +28,11 @@ public class Entity extends Point2D{
 		this.active = active;
 	}
 	
-	public void tick(){
-		animation.tick();
+	public Entity clone() {
+		return new Entity(getX(), getY());
 	}
 	
-	public void render(Graphics2D g2){
-		animation.render(g2, getX(), getY());
-	}
+	public void tick(){}
+	
+	public void render(Graphics2D g2){}
 }

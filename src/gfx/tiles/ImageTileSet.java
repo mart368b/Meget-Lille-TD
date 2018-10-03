@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
-public class TileSet {
+public class ImageTileSet {
 	
 	public static enum TileType{PATH, BUILD, UNBUILDABLE};
 	
@@ -14,9 +14,9 @@ public class TileSet {
 	private int width,
 				height;
 	
-	private ArrayList<Tile> tiles = new ArrayList<Tile>();
+	private ArrayList<ImageTile> tiles = new ArrayList<ImageTile>();
 	
-	public TileSet(String filePath, int tileSize){
+	public ImageTileSet(String filePath, int tileSize){
 		this.tileSize = tileSize;
 		try{
 			tileSheet = ImageIO.read(getClass().getResourceAsStream(filePath));
@@ -33,19 +33,19 @@ public class TileSet {
 				BufferedImage subImage = tileSheet.getSubimage(tileSize * col, 
 						tileSize * row, tileSize, tileSize);
 				if(row == 0){
-					tiles.add(new Tile(id, subImage, TileType.PATH));
+					tiles.add(new ImageTile(id, subImage, TileType.PATH));
 				}else if(row < 3){
-					tiles.add(new Tile(id, subImage, TileType.UNBUILDABLE));
+					tiles.add(new ImageTile(id, subImage, TileType.UNBUILDABLE));
 				}else{
-					tiles.add(new Tile(id, subImage, TileType.BUILD));
+					tiles.add(new ImageTile(id, subImage, TileType.BUILD));
 				}
 				id++;
 			}
 		}
 	}
 	
-	public Tile getTile(int id){
-		for(Tile tile : tiles){
+	public ImageTile getTile(int id){
+		for(ImageTile tile : tiles){
 			if(tile.getId() == id){
 				return tile;
 			}

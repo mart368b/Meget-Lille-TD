@@ -3,33 +3,27 @@ package game.state.states.player;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import game.Game;
-import game.entities.Entity;
-import game.entities.enemies.BasicEnemy;
 import game.entities.enemies.Enemy;
 import game.level.Map;
 import game.level.PathFinder;
 
 public class Round {
 
-	private int id, enemyCount, releasedCount = 0;
-	private Map map;
+	private int enemyCount, releasedCount = 0;
 	private Enemy[] enemyTypes;
 	private int currentEnemy = 0;
 	
 	private int winbonus;
 	
-	public Round(int roundnumber, Map map, Enemy[] ent, int enemyCount){
-		this.id = roundnumber;
+	public Round(Enemy[] ent, int enemyCount){
 		this.enemyCount = enemyCount;
-		this.map = map;
 		this.enemyTypes = ent;
 	}
 	
 	/**
 	 * Spawn a Basic enemy on every spawn point
 	 */
-	public Enemy[] getWave(){
+	public Enemy[] getWave(Map map){
 		if (releasedCount >= enemyCount - 1) {
 			return null;
 		}
@@ -37,22 +31,24 @@ public class Round {
 		Iterator<int[]> ite = map.getSpawnPointIterator();
 		// go over all spawn points
 		int[] spawnPoint;
-		Enemy[] enemies = new Enemy[map.getSpawnPointCount()];
+		ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 		int i = 0;
 		while (ite.hasNext()) {
 				spawnPoint = ite.next();
 				// get path from that spawnpoint
 				PathFinder paths = map.getPathFinder(spawnPoint);
 				Enemy newEnt = enemyTypes[currentEnemy++].clone(paths.nextPath());
-				enemies[i++] = newEnt;
-				if (++releasedCount >= enemyCount - 1) {
-					return enemies;
+				enemies.add(newEnt);
+				if (currentEnemy >= enemyTypes.length) {
+					currentEnemy = 0;
+				}
+				if (++releasedCount >= enemyCount) {
+					Enemy[] enemyArray = new Enemy[enemies.size()];
+					return enemies.toArray(enemyArray);
 				}
 		}
-		if (currentEnemy >= enemyTypes.length) {
-			currentEnemy = 0;
-		}
-		return enemies;
+		Enemy[] enemyArray = new Enemy[enemies.size()];
+		return enemies.toArray(enemyArray);
 	}
 	
 	public boolean reachedEnd() {

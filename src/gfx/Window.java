@@ -28,7 +28,6 @@ public class Window extends JPanel {
 		frame.pack();
 		frame.pack();
 		frame.setLocationRelativeTo(null);
-		System.out.println(this.getSize().toString());
 		frame.createBufferStrategy(2);
 		strategy = frame.getBufferStrategy();
 	}
