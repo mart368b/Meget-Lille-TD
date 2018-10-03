@@ -4,6 +4,8 @@ import java.awt.Graphics2D;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import gfx.tiles.Tile;
+
 public class Map {
 	
 	public static final char SPAWNTILE = 'X';
@@ -91,5 +93,26 @@ public class Map {
 	
 	public int getHeight() {
 		return height;
+	}	
+	
+	//IDK if this is the correct way to get data from this class .-.
+	
+	public Tile getTexture(char c, int tilesetID){
+		//TODO
+		return null;
+	}
+	
+	
+	@Deprecated public char[] getMapData() {
+		
+		return mapData;
+	}
+
+	public ArrayList<int[]> getSpawnPoints() {
+		return spawnPoints;
+	}
+	
+	public PathFinder getPath(int i) {
+		return pathFinders[i];
 	}
 }
