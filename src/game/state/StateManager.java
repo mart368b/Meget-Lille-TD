@@ -8,7 +8,7 @@ import game.state.states.input.BasicMouseInput;
 import game.state.states.player.levelPlayer;
 
 
-public class StateManager implements BasicMouseInput{
+public class StateManager implements BasicMouseInput {
 
 	private GameState gamestates[];
 	private StateTypes currentstate;

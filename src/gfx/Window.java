@@ -14,7 +14,7 @@ public class Window extends JPanel {
 	
 	public Window (int width, int height) {
 		super();
-		frame = new JFrame();
+		frame = new JFrame("Argon TD");
 		// create frame
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//frame.setResizable(false);
@@ -27,6 +27,7 @@ public class Window extends JPanel {
 		//frame.add(this);
 		frame.pack();
 		frame.pack();
+		frame.setLocationRelativeTo(null);
 		System.out.println(this.getSize().toString());
 		frame.createBufferStrategy(2);
 		strategy = frame.getBufferStrategy();
