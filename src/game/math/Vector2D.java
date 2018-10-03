@@ -28,8 +28,6 @@ public class Vector2D {
 	
 	/**
 	 * Update vector direction
-	 * @param x
-	 * @param y
 	 */
 	public void setTarget(double x, double y) {
 		this.x = x;
@@ -38,8 +36,6 @@ public class Vector2D {
 	
 	/**
 	 * Update vector direction
-	 * @param p1
-	 * @param p2
 	 */
 	public void setTarget(Point2D p1, Point2D p2) {
 		this.x = p2.getX() - p1.getX();
@@ -48,10 +44,6 @@ public class Vector2D {
 	
 	/**
 	 * Update vector direction
-	 * @param x0
-	 * @param y0
-	 * @param x1
-	 * @param y1
 	 */
 	public void setTarget(double x0, double y0, double x1, double y1) {
 		this.x = x1-x0;
@@ -121,18 +113,21 @@ public class Vector2D {
 	
 	/**
 	 * Render vector based on a point of origin
-	 * @param g2
-	 * @param x0
-	 * @param y0
 	 */
 	public void draw(Graphics2D g2, double x0, double y0) {
 		g2.draw(new Line2D.Double(x0, y0, x0 + x, y0 + y));
 	}
 	
+	/**
+	 * Render vector based on a point of origin
+	 */
 	public void draw(Graphics2D g2, Point2D p0) {
 		g2.draw(new Line2D.Double(p0.getX(), p0.getY(), p0.getX() + this.x, p0.getY() + this.y));
 	}
 	
+	/**
+	 * Get angle between two vectors
+	 */
 	public double angleBetweenVector( Vector2D v1) {
 		return Math.acos(( (v1.getX() * x) + (v1.getY() * y) )/( v1.getMagnitude() * getMagnitude() ));
 	}

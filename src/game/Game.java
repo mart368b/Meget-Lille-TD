@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import config.Configuration;
 import game.entities.Entity;
-import game.entities.enemies.Classic;
+import game.entities.enemies.BasicEnemy;
 import game.level.Map;
 import gfx.Window;
 import gfx.sprites.SpriteManager;
@@ -14,7 +14,7 @@ public class Game{
 	
 	public static Configuration config = new Configuration("config");
 	
-	public int tps = config.getInt("graphics.tps");
+	public static int tps = config.getInt("graphics.tps");
 	
     public final int ONE_SECOND = 1000000000;
     private int outputRate = 20;
@@ -47,7 +47,7 @@ public class Game{
 	
 	// add initiate map
 	public void initMap() {
-		entities.add(new Classic());
+		entities.add(new BasicEnemy(0, 0));
 	}
 	
 	// main game loop

@@ -16,8 +16,6 @@ public class Point2D{
 	
 	/**
 	 * Create a new Point
-	 * @param x
-	 * @param y
 	 */
 	public Point2D(double x, double y) {
 		this.x = x;
@@ -33,8 +31,6 @@ public class Point2D{
 	
 	/**
 	 * Move the point to a given position
-	 * @param x
-	 * @param y
 	 */
 	public void moveTo(double x, double y) {
 		this.x = x;
@@ -42,9 +38,15 @@ public class Point2D{
 	}
 	
 	/**
+	 * Move the point to a given position
+	 */
+	public void moveTo(Point2D p) {
+		this.x = p.getX();
+		this.y = p.getY();
+	}
+	
+	/**
 	 * Move the point by a specific amount
-	 * @param vx
-	 * @param vy
 	 */
 	public void translate (double vx, double vy) {
 		this.x += vx;
@@ -53,7 +55,6 @@ public class Point2D{
 	
 	/**
 	 * Move the point using a Vector to describe its movement
-	 * @param v
 	 */
 	public void translate (Vector2D v) {
 		this.x += v.getX();
@@ -62,9 +63,6 @@ public class Point2D{
 	
 	/**
 	 * Return the distance from a point specified by its x and y value
-	 * @param x
-	 * @param y
-	 * @return
 	 */
 	public double distance (double x, double y) {
 		return Math.sqrt(Math.pow(this.x - x, 2) + Math.pow(this.y - y, 2));
@@ -72,8 +70,6 @@ public class Point2D{
 	
 	/**
 	 * Return the distance from a given Point
-	 * @param p
-	 * @return
 	 */
 	public double distance (Point2D p) {
 		return Math.sqrt(Math.pow(x - p.x, 2) + Math.pow(y - p.y, 2));
@@ -81,7 +77,6 @@ public class Point2D{
 	
 	/**
 	 * Render the point
-	 * @param g2
 	 */
 	public void render(Graphics2D g2) {
 		g2.draw(new Ellipse2D.Double(x - d/2, y - d/2, d, d));
@@ -97,9 +92,6 @@ public class Point2D{
 	
 	/**
 	 * Rotate point around a secondary point by a specified angle
-	 * @param x0
-	 * @param y0
-	 * @param angle
 	 */
 	public void rotateAroundOrigin(double x0, double y0, double angle) {
 		double lx = x;
@@ -112,8 +104,6 @@ public class Point2D{
 	
 	/**
 	 * Rotate point around a secondary point by a specified angle
-	 * @param p
-	 * @param angle
 	 */
 	public void rotateAroundOrigin(Point2D p, double angle) {
 		double lx = x;
@@ -126,9 +116,6 @@ public class Point2D{
 	
 	/**
 	 * Calculate the distance from a line described by the points p0 and p1
-	 * @param p1
-	 * @param p2
-	 * @return
 	 */
 	public double distanceFromLine(Point2D p0, Point2D p1) {
 		return ((p1.y - p0.y)*x - (p1.x - p0.x)*y + p1.x * p0.y - p1.y * p0.x) / Math.sqrt(Math.pow((p1.y - p0.y), 2) + Math.pow(p1.x - p0.x, 2));

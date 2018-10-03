@@ -9,9 +9,50 @@ public class PathFinder {
 	private ArrayList<WalkingPath> paths = new ArrayList<WalkingPath>();
 	private int nextPath = 0;
 	
+	/**
+	 * recursivly find paths throught a map starting at x0, y0
+	 */
 	public PathFinder(int x0, int y0, Map map) {
-		paths.add(new WalkingPath());
-		move(x0, y0, 1, 0, 0, map);
+		// check if there is tile to the left of x0
+		if (x0 > 1) {
+			char leftTile = map.getTile(x0 - 1, y0);
+			// check if moving onto tile is considered a valid move
+			if (leftTile == Map.HORIZONTALPATH || leftTile == map.CORNER2 || leftTile == map.CORNER4) {
+				//create new path runner
+				paths.add(new WalkingPath());
+				move(x0, y0, -1, 0, paths.size() - 1, map);
+			}
+		}
+		// check if there is tile to the right of x0
+		if (x0 < map.getWidth() - 2) {
+			char rightTile = map.getTile(x0 + 1, y0);
+			// check if moving onto tile is considered a valid move
+			if (rightTile == Map.HORIZONTALPATH || rightTile == map.CORNER1 || rightTile == map.CORNER3) {
+				//create new path runner
+				paths.add(new WalkingPath());
+				move(x0, y0, 1, 0, paths.size() - 1, map);
+			}
+		}
+		// check if there is tile to above of y0
+		if (y0 > 1) {
+			char upTile = map.getTile(x0, y0 - 1);
+			// check if moving onto tile is considered a valid move
+			if (upTile == Map.VERTICALPATH || upTile == map.CORNER1 || upTile == map.CORNER2) {
+				//create new path runner
+				paths.add(new WalkingPath());
+				move(x0, y0, 0, -1, paths.size() - 1, map);
+			}
+		}
+		// check if there is tile below y0
+		if (y0 < map.getHeight() -2) {
+			char downTile = map.getTile(x0, y0 + 1);
+			// check if moving onto tile is considered a valid move
+			if (downTile == Map.VERTICALPATH || downTile == map.CORNER3 || downTile == map.CORNER4) {
+				//create new path runner
+				paths.add(new WalkingPath());
+				move(x0, y0, 0, 1, paths.size() - 1, map);
+			}
+		}
 	}
 	
 	/**
@@ -36,6 +77,7 @@ public class PathFinder {
 	 * </ol>
 	 */
 	private void move(int x, int y, int vx, int vy, int id, Map map) {
+		// TODO add exceptions for bad map design
 		addPathPoint(id, x, y);
 		int nx = x + vx;
 		int ny = y + vy;
@@ -182,7 +224,7 @@ public class PathFinder {
 			 * vx = 0
 			 * vy = 1
 			 */
-			move(x, y, -vy, -vx, id + 1, map);
+			move(x, y, -vy, -vx, paths.size() - 1, map);
 			/*
 			 * 1. - right
 			 * vx = 1

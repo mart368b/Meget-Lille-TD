@@ -63,6 +63,14 @@ public class WalkingPath {
 		return p;
 	}
 	
+	public double getStartingX() {
+		return points.get(0).getX();
+	}
+	
+	public double getStartingY() {
+		return points.get(0).getY();
+	}
+	
 	public int getLength() {
 		return points.size();
 	}

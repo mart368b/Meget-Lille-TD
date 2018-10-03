@@ -1,11 +1,7 @@
 package game.level;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
+import java.awt.Graphics2D;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.ArrayList;
 
 public class Map {
@@ -17,12 +13,14 @@ public class Map {
 	public static final char VERTICALPATH = '|';
 	// horizontal line
 	public static final char HORIZONTALPATH = '\u2500';
+	
 	public static final char JUNCTION = '+';
+	public static final char SPLITTER = 'V';
 	/*
-	 * using outwards direction the top left corner of a cube
+	 * NOTE: the following are using outwards direction e.g a corner represented as the top left corner of a cube
 	 * would be called right - down
-	 * but people walking along the lines would enter in the opposite direction
-	 * so either go left or go up
+	 * But take note people walking on the line would enter in the opposit direction
+	 * so either go enter going left or upwards
 	 */
 	// left - down
 	public static final char CORNER1 = '\u2510';
@@ -32,12 +30,11 @@ public class Map {
 	public static final char CORNER3 = '\u2518';
 	// right - up
 	public static final char CORNER4 = '\u2514';
-	public static final char SPLITTER = 'V';
 	
 	private int width, height;
 	private char[] mapData;
 	private ArrayList<int[]> spawnPoints = new ArrayList<int[]>();
-	private PathFinder pathFinder;
+	private PathFinder[] pathFinders;
 	
 	public Map(String fileName) {
 		// create map
@@ -70,14 +67,29 @@ public class Map {
 				}
 			}
 		}
-		
+
+		pathFinders = new PathFinder[spawnPoints.size()];
+		int i = 0;
 		// find all defined paths through the map
-		pathFinder = new PathFinder(spawnPoints.get(0)[0], spawnPoints.get(0)[1], this);
-		
+		for (int[] point: spawnPoints) {
+			pathFinders[i++] = new PathFinder(point[0], point[1], this);			
+		}
 		// use pathFinder.nextPath() to get the next path (it just cycles through them)
 	}
 	
 	public char getTile(int x, int y) {
 		return mapData[x + y * width];
+	}
+	
+	public void render(Graphics2D g2) {
+		
+	}
+	
+	public int getWidth() {
+		return width;
+	}
+	
+	public int getHeight() {
+		return height;
 	}
 }

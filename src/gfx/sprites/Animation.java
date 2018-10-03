@@ -1,6 +1,8 @@
 package gfx.sprites;
 
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
 public class Animation {
@@ -43,7 +45,16 @@ public class Animation {
 		}
 	}
 	
-	public void render(Graphics2D g, int x, int y){
-		g.drawImage(frames[currentFrame], x, y, null);
+	public void render(Graphics2D g2, double x, double y){
+		//allows for double precision movement of picture
+		AffineTransform t = new AffineTransform();
+        t.translate(x, y); // x/y set here, ball.x/y = double, ie: 10.33
+        t.scale(1, 1); // scale = 1 
+        
+		g2.drawImage(frames[currentFrame], t, null);
+	}
+	
+	public void render(Graphics2D g2, Point2D p){
+		render(g2, p.getX(), p.getY());
 	}
 }

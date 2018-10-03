@@ -6,6 +6,8 @@ import javax.imageio.ImageIO;
 
 public class Sprite {
 	
+	public static final int DEFAULTSPRITESIZE = 32;
+	
 	private BufferedImage[] frames;
 	private int size;
 	
