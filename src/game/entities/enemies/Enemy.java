@@ -1,13 +1,12 @@
 package game.entities.enemies;
 
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 
 import game.Game;
 import game.entities.Entity;
 import game.level.WalkingPath;
-import game.math.Point2D;
 import gfx.sprites.Sprite;
-import gfx.sprites.SpriteManager;
 
 public class Enemy extends Entity {
 	
@@ -37,6 +36,7 @@ public class Enemy extends Entity {
 		this.health = health;
 		this.speed = speed;
 		this.path = path;
+		this.sprite = sprite;
 	}
 	
 	/**
@@ -65,6 +65,10 @@ public class Enemy extends Entity {
 	public void move() {
 		progress += (speed + 0.)/Game.tps;
 		moveTo(path.getPosition(progress));
+		
+		int dic = path.getDirection();
+		BufferedImage[] frames = sprite.getFrames(dic);
+		animation.setFrames(frames);
 		
 		if (progress > path.getLength()) {
 			end = true;

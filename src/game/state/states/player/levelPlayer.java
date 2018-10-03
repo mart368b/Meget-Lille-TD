@@ -38,8 +38,8 @@ public class levelPlayer extends GameState {
 		int rounds = Game.config.getInt("level1_0.rounds");
 		this.rounds = new Round[rounds];
 		for(int i = 0; i < rounds; i++){
-			this.rounds[i] = new Round(i + 1, map, new Enemy[] {new BasicEnemy()},10);
-							}
+			this.rounds[i] = new Round(i + 1, map, new Enemy[] {new BasicEnemy()}, 10);
+		}
 		this.currentRound = 0;
 	}
 

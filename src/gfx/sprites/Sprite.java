@@ -1,6 +1,7 @@
 package gfx.sprites;
 
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
@@ -8,7 +9,7 @@ public class Sprite {
 	
 	public static final int DEFAULTSPRITESIZE = 32;
 	
-	private BufferedImage[] frames;
+	private HashMap<Integer, BufferedImage[]> frames = new HashMap<Integer, BufferedImage[]>();
 	private int size;
 	
 	/**
@@ -24,16 +25,20 @@ public class Sprite {
 		try{
 			BufferedImage sheet = ImageIO.read(getClass().getResourceAsStream(filePath));
 			int width = sheet.getWidth()/size;
-			frames = new BufferedImage[width];
-			for(int i = 0; i < width; i++){
-				frames[i] = sheet.getSubimage(i * size, 0, size, size);
+			int height = sheet.getHeight()/size;
+			for(int index = 0; index < height; index++){
+				BufferedImage[] images = new BufferedImage[width];
+				for(int i = 0; i < width; i++){
+					images[i] = sheet.getSubimage(i * size, index * size, size, size);
+				}
+				frames.put(index, images);
 			}
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 	}
 	
-	public BufferedImage[] getFrames(){
-		return frames;
+	public BufferedImage[] getFrames(int i){
+		return frames.get(i);
 	}
 }

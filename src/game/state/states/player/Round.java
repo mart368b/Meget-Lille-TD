@@ -40,14 +40,14 @@ public class Round {
 		Enemy[] enemies = new Enemy[map.getSpawnPointCount()];
 		int i = 0;
 		while (ite.hasNext()) {
-			spawnPoint = ite.next();
-			// get path from that spawnpoint
-			PathFinder paths = map.getPathFinder(spawnPoint);
-			Enemy newEnt = enemyTypes[currentEnemy++].clone(paths.nextPath());
-			enemies[i++] = newEnt;
-			if (++releasedCount >= enemyCount - 1) {
-				return enemies;
-			}
+				spawnPoint = ite.next();
+				// get path from that spawnpoint
+				PathFinder paths = map.getPathFinder(spawnPoint);
+				Enemy newEnt = enemyTypes[currentEnemy++].clone(paths.nextPath());
+				enemies[i++] = newEnt;
+				if (++releasedCount >= enemyCount - 1) {
+					return enemies;
+				}
 		}
 		if (currentEnemy >= enemyTypes.length) {
 			currentEnemy = 0;

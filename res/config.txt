@@ -4,8 +4,8 @@ graphics:
 	tps: 60
 classic:
 	health: 50
-	speed: 4
-	animationspeed: 20
+	speed: 2
+	animationspeed: 10
 rounds:
 	multiplier: 3
 level1_0:

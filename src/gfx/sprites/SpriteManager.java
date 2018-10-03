@@ -14,7 +14,7 @@ public class SpriteManager {
 	 */
 	
 	static {
-		sprites.put(0, new Sprite("/sprites/enemies/classic.png", 32));
+		sprites.put(0, new Sprite("/sprites/enemies/SheepSheet.png", 32));
 	}
 	
 	public static Sprite getSprite(int id){

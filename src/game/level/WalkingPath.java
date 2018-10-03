@@ -14,11 +14,20 @@ public class WalkingPath {
 	private boolean loop = false;
 	@SuppressWarnings("unused")
 	private int loopIndex;
+	private int direction = 0;
 
 	public WalkingPath() {}
 	
 	public void addPoint(Point2D p) {
 		points.add(p);
+	}
+	
+	private void setDirection(int i){
+		direction = i;
+	}
+	
+	public int getDirection(){
+		return direction;
 	}
 	
 	public int indexOf(Point2D p0) {
@@ -53,6 +62,18 @@ public class WalkingPath {
 		Point2D p1 = points.get(t1);
 		//create vector between point
 		Vector2D vec = new Vector2D(p0, p1);
+		
+		//define direction
+		if((vec.getX() > 0) && (vec.getY() == 0)){
+			direction = 0;
+		}else if((vec.getX() < 0) && (vec.getY() == 0)){
+			direction = 3;
+		}else if((vec.getX() == 0) && (vec.getY() < 0)){
+			direction = 2;
+		}else{
+			direction = 1;
+		}
+		
 		//get current progress between p0 and p1
 		double progress = t - t0;
 		
