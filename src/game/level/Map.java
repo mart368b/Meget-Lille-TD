@@ -140,7 +140,6 @@ public class Map {
 			MapReader reader = new MapReader(fileName);
 			
 			width = reader.getWidth();
-			System.out.println(width);
 			height = reader.getHeight();
 			
 			mapData = reader.getMapData();

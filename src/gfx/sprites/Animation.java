@@ -61,4 +61,8 @@ public class Animation {
 	public int getAnimationSpeed() {
 		return animationSpeed;
 	}
+
+	public void setFrames(BufferedImage[] frames) {
+		this.frames = frames;
+	}
 }

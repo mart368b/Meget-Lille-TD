@@ -9,6 +9,7 @@ import game.entities.enemies.BasicEnemy;
 import game.level.Map;
 import game.state.StateManager;
 import game.state.states.input.InputHandler;
+import gfx.HUD;
 import gfx.Window;
 import gfx.sprites.SpriteManager;
 import gfx.tiles.TileSetManager;
@@ -43,6 +44,8 @@ public class Game{
 		
 		window.addMouseMotionListener(handler);
 		window.addMouseListener(handler);
+		
+		new HUD().loadImage("HUD");
 	}
 	
 	// main game loop

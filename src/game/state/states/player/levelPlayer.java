@@ -11,6 +11,7 @@ import game.state.StateManager;
 import game.state.StateTypes;
 import game.state.states.EnemyHandler;
 import game.state.states.player.interactibles.TileHighlighter;
+import gfx.HUD;
 import gfx.tiles.TileSet;
 import gfx.tiles.TileSetManager;
 
@@ -37,8 +38,8 @@ public class levelPlayer extends GameState {
 		int rounds = Game.config.getInt("level1_0.rounds");
 		this.rounds = new Round[rounds];
 		for(int i = 0; i < rounds; i++){
-			this.rounds[i] = new Round(i + 1, map, new Enemy[] {new BasicEnemy()},10);
-							}
+			this.rounds[i] = new Round(i + 1, map, new Enemy[] {new BasicEnemy()}, 10);
+		}
 		this.currentRound = 0;
 	}
 
@@ -72,6 +73,7 @@ public class levelPlayer extends GameState {
 						locX, locY, null);
 			}
 		}
+		g2.drawImage(HUD.image, 960, 0, null);
 		//render enemies from Round Object
 		handler.render(g2);
 		

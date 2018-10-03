@@ -15,12 +15,11 @@ import gfx.sprites.Sprite;
 public class Entity extends Point2D{
 	
 	protected Animation animation;
-	
 	protected boolean active = true;
 	
 	public Entity(double x, double y, Sprite sprite, int animationSpeed){
 		super(x, y);
-		this.animation = new Animation(sprite.getFrames(), animationSpeed);
+		this.animation = new Animation(sprite.getFrames(0), animationSpeed);
 	}
 	
 	public boolean isActive() {
