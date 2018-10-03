@@ -1,4 +1,5 @@
-﻿SPAWNTILE = X
+﻿SPAWNTILE = ➲
+ENDPOINT = ⛔
 VERTICALPATH = ─
 HORIZONTALPATH = |
 JUNCTION = +
@@ -8,3 +9,38 @@ CORNER1 = ┐
 CORNER2 = ┌
 CORNER3 = ┘
 CORNER4 = └
+
+□
+■
+
+⬈
+⬋
+⬊
+⬉
+
+⬀
+⬁
+⬂
+⬃
+
+⧝
+○
+
+△
+▷
+▽
+◁
+◹
+◸
+◺
+◿
+
+✽
+✤
+✣
+✛
+
+▼
+▲
+◀
+▶
