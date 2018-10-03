@@ -10,7 +10,7 @@ public class Animation {
 	private BufferedImage[] frames;
 	
 	private int currentFrame;
-	private int speed;
+	private int animationSpeed;
 	
 	private int tick;
 	
@@ -22,14 +22,14 @@ public class Animation {
 	 * @param speed The speed of the iteration. 60 being 1 second.
 	 */
 	
-	public Animation(BufferedImage[] frames, int speed){
+	public Animation(BufferedImage[] frames, int animationSpeed){
 		this.currentFrame = 0;
 		this.frames = frames;
-		this.speed = speed;
+		this.animationSpeed = animationSpeed;
 	}
 	
 	public void tick(){
-		if(tick >= speed){
+		if(tick >= animationSpeed){
 			tick = 0;
 			nextFrame();
 		}else{
@@ -56,5 +56,9 @@ public class Animation {
 	
 	public void render(Graphics2D g2, Point2D p){
 		render(g2, p.getX(), p.getY());
+	}
+
+	public int getAnimationSpeed() {
+		return animationSpeed;
 	}
 }

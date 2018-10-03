@@ -3,6 +3,7 @@ package game.state.states;
 import java.awt.Graphics2D;
 
 import game.Game;
+import game.entities.enemies.BasicEnemy;
 import game.level.Map;
 import game.state.GameState;
 import game.state.Round;
@@ -30,7 +31,7 @@ public class level1_0 extends GameState {
 		int rounds = Game.config.getInt("level1_0.rounds");
 		this.rounds = new Round[rounds];
 		for(int i = 0; i < rounds; i++){
-			this.rounds[i] = new Round((i + 1), map);
+			this.rounds[i] = new Round((i + 1), map, new BasicEnemy());
 		}
 		this.currentRound = 0;
 	}

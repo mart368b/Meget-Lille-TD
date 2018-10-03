@@ -3,6 +3,8 @@ package game.level;
 import java.awt.Graphics2D;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import gfx.tiles.Tile;
 
@@ -36,6 +38,7 @@ public class Map {
 	private int width, height;
 	private char[] mapData;
 	private ArrayList<int[]> spawnPoints = new ArrayList<int[]>();
+	private HashMap<int[], PathFinder[]> pathfinders;
 	private PathFinder[] pathFinders;
 	
 	public Map(String fileName) {
@@ -101,9 +104,8 @@ public class Map {
 		//TODO
 		return null;
 	}
-	
-	
-	@Deprecated public char[] getMapData() {
+
+	public char[] getMapData() {
 		
 		return mapData;
 	}
@@ -112,7 +114,20 @@ public class Map {
 		return spawnPoints;
 	}
 	
-	public PathFinder getPath(int i) {
-		return pathFinders[i];
+	public Iterator<int[]> getSpawnPointIterator() {
+		return spawnPoints.iterator();
+	}
+	
+	public int[] getSpawnPoint(int i) {
+		return spawnPoints.get(i);
+	}
+	
+	public PathFinder getPathFinder(int[] spawnPoint) {
+		for(int i = 0; i < spawnPoints.size(); i++) {
+			if (spawnPoints.get(i).equals(spawnPoint)) {
+				return pathFinders[i];
+			}
+		}
+		return null;
 	}
 }

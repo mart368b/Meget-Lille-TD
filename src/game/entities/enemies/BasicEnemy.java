@@ -8,6 +8,16 @@ import gfx.sprites.SpriteManager;
 
 public class BasicEnemy extends Enemy{
 
+	public BasicEnemy() {
+		super(
+				SpriteManager.getSprite(0), 
+				0,	0, 
+				Game.config.getInt("classic.animationspeed"), 
+				Game.config.getInt("classic.health"), 
+				Game.config.getInt("classic.speed")
+				);
+	}
+	
 	public BasicEnemy(double x, double y) {
 		super(
 				SpriteManager.getSprite(0), 

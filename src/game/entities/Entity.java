@@ -38,7 +38,4 @@ public class Entity extends Point2D{
 	public void render(Graphics2D g2){
 		animation.render(g2, getX(), getY());
 	}
-	public void spawn(int[] location){
-		moveTo(location[0], location[1]);
-	}
 }
