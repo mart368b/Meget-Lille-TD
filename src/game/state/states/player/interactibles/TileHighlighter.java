@@ -8,9 +8,20 @@ import game.level.Map;
 
 public class TileHighlighter {
 	
+	public enum HighLightTypes{
+		READY,
+		ERROR,
+		DISABLED
+	}
+	
 	private int x, y;
+	private int width = 2, height = 2;
+	
 	private static final Color c1 = new Color(0,255,255);
 	private static final Color c2 = new Color(0,206,209);
+	
+	private HighLightTypes state = HighLightTypes.READY;
+	
 	private Color currentColor;
 	private boolean visible = false;
 	private double t = 0, dt = 0.5/Game.tps;
@@ -41,11 +52,26 @@ public class TileHighlighter {
 		this.y = y/Map.TILESIZE;
 	}
 	
+	public void setDimension(int width, int height) {
+		this.width = width;
+		this.height = height;
+	}
+	
 	public void render(Graphics2D g2) {
 		if (visible) {
 			g2.setColor(currentColor);
-			g2.drawRect(x * Map.TILESIZE - 1, y * Map.TILESIZE - 1, Map.TILESIZE + 1, Map.TILESIZE + 1);
+			int screenWidth = width * Map.TILESIZE;
+			int screenHeight = height * Map.TILESIZE;
+			g2.drawRect(getScreenX() - 1, getScreenY() - 1, screenWidth + 1, screenHeight + 1);
 		}
+	}
+	
+	public int getScreenX() {
+		return x * Map.TILESIZE - 1;
+	}
+	
+	public int getScreenY() {
+		return y * Map.TILESIZE - (height * Map.TILESIZE)/2;
 	}
 	
 	private Color getColor(double t) {

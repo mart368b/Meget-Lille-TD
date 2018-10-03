@@ -68,7 +68,6 @@ public class levelPlayer extends GameState {
 			int locX = x * tileset.getTileSize();
 			for(int y = 0; y < map.getHeight(); y++){
 				int locY = y * tileset.getTileSize();
-				
 				g2.drawImage(map.getTexture(map.getTile(x, y), 0).getImage(),
 						locX, locY, null);
 			}

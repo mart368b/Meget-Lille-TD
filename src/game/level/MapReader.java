@@ -22,7 +22,6 @@ public class MapReader {
 		
 		//get first line
 		String infos = reader.readLine();
-		infos = infos.substring(1, infos.length());
 		String[] info = infos.trim().split(" ");
 		
 		//set width height
