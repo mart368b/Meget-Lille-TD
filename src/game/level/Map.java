@@ -44,7 +44,6 @@ public class Map {
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
 				if (getTile(x, y).equals(TileLibrary.SPAWNTILE.getValue())) {
-					System.out.println(x + " " + y);
 					spawnPoints.add(new int[] { x, y});
 				}
 			}
