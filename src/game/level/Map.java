@@ -82,7 +82,7 @@ public class Map {
 	}
 	
 	public char toChar(String s){
-		return s.charAt(0);
+		return s.charAt(1);
 	}
 	
 	public String getTile(int x, int y) {
