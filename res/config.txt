@@ -6,3 +6,7 @@ classic:
 	health: 50
 	speed: 60
 	animationspeed: 20
+rounds:
+	multiplier: 3
+level1_0:
+	rounds: 5

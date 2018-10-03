@@ -1,12 +1,10 @@
 package game.level;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.ArrayList;
+
+import gfx.tiles.Tile;
+import gfx.tiles.TileSetManager;
 
 public class Map {
 	
@@ -79,5 +77,27 @@ public class Map {
 	
 	public char getTile(int x, int y) {
 		return mapData[x + y * width];
+	}
+	
+	
+	
+	
+	//IDK if this is the correct way to get data from this class .-.
+	
+	public Tile getTexture(char c, int tilesetID){
+		//TODO
+		return null;
+	}
+	
+	public char[] getMapData() {
+		return mapData;
+	}
+
+	public ArrayList<int[]> getSpawnPoints() {
+		return spawnPoints;
+	}
+
+	public PathFinder getPathFinder() {
+		return pathFinder;
 	}
 }

@@ -7,8 +7,10 @@ import config.Configuration;
 import game.entities.Entity;
 import game.entities.enemies.Classic;
 import game.level.Map;
+import game.state.StateManager;
 import gfx.Window;
 import gfx.sprites.SpriteManager;
+import gfx.tiles.TileSetManager;
 
 public class Game{
 	
@@ -20,7 +22,7 @@ public class Game{
     private int outputRate = 20;
 	private Window window;
 	
-	private ArrayList<Entity> entities = new ArrayList<Entity>();
+	private StateManager sm;
 
 	public static void main(String[] args) {
 		new Game();
@@ -42,12 +44,14 @@ public class Game{
 		
 		Map m = new Map("testmap2");
 		
+		//load all textures
 		new SpriteManager();
+		new TileSetManager();
 	}
 	
 	// add initiate map
 	public void initMap() {
-		entities.add(new Classic());
+		sm = new StateManager();
 	}
 	
 	// main game loop
@@ -95,9 +99,7 @@ public class Game{
 	public void tick(double dt) {
 		// do movement here
 		// called once every 60 second
-		for(Entity ent : entities){
-			ent.tick();
-		}
+		sm.tick();
 	}
 	
 	public void render() {
@@ -105,16 +107,11 @@ public class Game{
 			g.translate(window.getMenuBarWidth()/2, window.getMenuBarHeight() - window.getMenuBarWidth()/2);
 			
 			// draw here
-			for(Entity ent : entities){
-				ent.render(g);
-			}
+			sm.render(g);
 			// (0,0) in top left corner
 			
 			g.dispose();
 			window.showStrategy();
-		
-		
-		// called as often as possible
-		
+			// called as often as possible
 	}
 }

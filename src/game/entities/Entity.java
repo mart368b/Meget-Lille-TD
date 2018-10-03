@@ -25,22 +25,34 @@ public class Entity {
 		this.animation = new Animation(sprite.getFrames(), animationSpeed);
 		this.health = health;
 		this.speed = speed;
-		this.alive = true;
+		this.alive = false;
 		this.x = 0;
 		this.y = 0;
 	}
 	
 	public void tick(){
-		animation.tick();
+		if(alive){
+			animation.tick();
+		}
 	}
 	
 	public void render(Graphics2D g){
-		animation.render(g, x, y);
+		if(alive){
+			animation.render(g, x, y);
+		}
 	}
 	
 	public void hit(int damage){
-		if((health -= damage) <= 0){
-			alive = false;
+		if(alive){
+			if((health -= damage) <= 0){
+				alive = false;
+			}
 		}
+	}
+	
+	public void spawn(int[] location){
+		alive = true;
+		x = location[0];
+		y = location[1];
 	}
 }
