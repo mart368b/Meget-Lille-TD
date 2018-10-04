@@ -10,6 +10,7 @@ import game.level.Map;
 import game.state.StateManager;
 import game.state.states.input.InputHandler;
 import gfx.HUD;
+import gfx.SplashScreenDriver;
 import gfx.Window;
 import gfx.sprites.SpriteManager;
 import gfx.tiles.TileSetManager;
@@ -34,6 +35,9 @@ public class Game{
 	public Game() {
 		sm = new StateManager();
 		handler.setTarget(sm);
+		
+		new SplashScreenDriver();
+		
 		initDisplay();
 		run();
 	}

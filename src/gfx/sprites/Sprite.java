@@ -10,7 +10,6 @@ public class Sprite {
 	public static final int DEFAULTSPRITESIZE = 32;
 	
 	private HashMap<Integer, BufferedImage[]> frames = new HashMap<Integer, BufferedImage[]>();
-	private int size;
 	
 	/**
 	 * 
@@ -20,16 +19,15 @@ public class Sprite {
 	 * @param spriteSize The size of each frame/subimage.
 	 */
 	
-	public Sprite(String filePath, int spriteSize){
-		this.size = spriteSize;
+	public Sprite(String filePath, int spriteSizeW, int spriteSizeH){
 		try{
 			BufferedImage sheet = ImageIO.read(getClass().getResourceAsStream(filePath));
-			int width = sheet.getWidth()/size;
-			int height = sheet.getHeight()/size;
+			int width = sheet.getWidth()/spriteSizeW;
+			int height = sheet.getHeight()/spriteSizeH;
 			for(int index = 0; index < height; index++){
 				BufferedImage[] images = new BufferedImage[width];
 				for(int i = 0; i < width; i++){
-					images[i] = sheet.getSubimage(i * size, index * size, size, size);
+					images[i] = sheet.getSubimage(i * spriteSizeW, index * spriteSizeH, spriteSizeW, spriteSizeH);
 				}
 				frames.put(index, images);
 			}

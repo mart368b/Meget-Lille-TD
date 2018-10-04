@@ -6,6 +6,36 @@ classic:
 	health: 50
 	speed: 2
 	animationspeed: 10
+basic_tower0:
+	damage: 25
+	speed: 10
+	cost: 100
+	lore: The most basic bitch you can imagine
+basic_tower1:
+	damage: 40
+	speed: 10
+	cost: 150
+	lore: The most basic bitch you can imagine
+basic_tower2:
+	damage: 50
+	speed: 15
+	cost: 100
+	lore: The most basic bitch you can imagine
+home_tower0:
+	damage: 50
+	speed: 20
+	cost: 250
+	lore: The most basic bitch you can imagine
+home_tower1:
+	damage: 75
+	speed: 25
+	cost: 200
+	lore: The most basic bitch you can imagine
+home_tower2:
+	damage: 100
+	speed: 30
+	cost: 230
+	lore: The most basic bitch you can imagine
 rounds:
 	multiplier: 3
 level1_0:

@@ -6,9 +6,10 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import game.Game;
-import game.entities.enemies.BasicEnemy;
-import game.entities.enemies.Enemy;
+import game.entities.Tower;
 import game.entities.tiles.Tile;
+import game.entities.towers.BasicTower;
+import game.entities.towers.HomeTower;
 import game.level.Map;
 import game.state.GameState;
 import game.state.StateManager;
@@ -31,6 +32,7 @@ public class levelPlayer extends GameState {
 	private TileHighlighter highlighter;
 	private Tile backgroundTile;
 	private int gold, lifes;
+	private ArrayList<Tower> towers = new ArrayList<Tower>();
 	private boolean complete = false, victory = false, lose = true;
 
 	public levelPlayer(StateManager sm, Round[] rounds, Tile backgroundTile, int lifes, int gold) {
@@ -49,6 +51,43 @@ public class levelPlayer extends GameState {
 		highlighter = new TileHighlighter(map);
 		tileset = TileSetManager.getTileset(0);
 		this.currentRound = 0;
+		
+		//temperary to test towers
+		/*int[] cost = new int[3];
+		int[] speed = new int[3];
+		int[] damage = new int[3];
+		String[] lore = new String[3];
+		for(int i = 0; i < 3; i++){
+			damage[i] = Game.config.getInt("basic_tower" + i + ".damage");
+			cost[i] = Game.config.getInt("basic_tower" + i + ".cost");
+			speed[i] = Game.config.getInt("basic_tower" + i + ".speed");
+			lore[i] = Game.config.getString("basic_tower" + i + ".lore");
+		}
+		towers.add(new BasicTower(cost, speed, damage, lore, 5*32, 6*32));
+		towers.add(new BasicTower(cost, speed, damage, lore, 7*32, 6*32));
+		towers.add(new BasicTower(cost, speed, damage, lore, 9*32, 6*32));
+		
+		towers.get(1).lvlUp();
+		towers.get(2).lvlUp();
+		towers.get(2).lvlUp();
+		
+		cost = new int[3];
+		speed = new int[3];
+		damage = new int[3];
+		lore = new String[3];
+		for(int i = 0; i < 3; i++){
+			damage[i] = Game.config.getInt("home_tower" + i + ".damage");
+			cost[i] = Game.config.getInt("home_tower" + i + ".cost");
+			speed[i] = Game.config.getInt("home_tower" + i + ".speed");
+			lore[i] = Game.config.getString("home_tower" + i + ".lore");
+		}
+		towers.add(new HomeTower(cost, speed, damage, lore, 5*32, 8*32));
+		towers.add(new HomeTower(cost, speed, damage, lore, 7*32, 8*32));
+		towers.add(new HomeTower(cost, speed, damage, lore, 9*32, 8*32));
+			
+		towers.get(4).lvlUp();
+		towers.get(5).lvlUp();
+		towers.get(5).lvlUp();*/
 	}
 
 	@Override
@@ -61,7 +100,7 @@ public class levelPlayer extends GameState {
 				this.currentRound++;
 				if (this.currentRound >= rounds.length) {
 					setVictory();
-				}else {
+				}else{
 					currentRound = rounds[this.currentRound];					
 				}
 			}
@@ -109,6 +148,9 @@ public class levelPlayer extends GameState {
 		//render map
 		//g2.drawImage(map.getTexture(map.getTile(x, y), 0).getImage(),
 		map.render(g2);
+		for(Tower tower : towers){
+			tower.render(g2);
+		}
 		
 		//render enemies from Round Object
 		handler.render(g2);		
