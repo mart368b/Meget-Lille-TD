@@ -3,16 +3,16 @@ package game.entities.tiles;
 import java.awt.Graphics2D;
 
 import game.entities.Entity;
-import gfx.tiles.ImageTile;
-import gfx.tiles.ImageTileSet.TileType;
+import game.level.Map;
 import gfx.tiles.TileSetManager;
 
 public class Tile extends Entity{
 	
-	private char id;
-	private int imgIndex, setIndex;
 	public static int TILESIZE = 32;
-	private boolean obstical = false;
+	
+	protected char id;
+	protected int imgIndex, setIndex;
+	protected boolean obstical = false, marked = false;
 
 	public Tile(char id, int imgIndex, int setIndex) {
 		super(0, 0);
@@ -48,13 +48,31 @@ public class Tile extends Entity{
 	public boolean equals(Tile t) {
 		return id == t.getId();
 	}
+	
 	public boolean isObstical() {
-		ImageTile tile = TileSetManager.getTileset(setIndex).getTile(imgIndex);
-		if(tile.getType() == TileType.PATH || tile.getType() == TileType.UNBUILDABLE){
-			return true;
-		}
+		//change constructor in game.entities.tiles.TileLibary instead
+		return obstical;
+	}
+	
+	public boolean isBuyable() {
 		return false;
 	}
+	
+	public int getSetIndex() {
+		return setIndex;
+	}
+	
+	public int getImgIndex() {
+		return imgIndex;
+	}
+	
+	public int getPrice() {
+		return 0;
+	}
+	
+	public void highlight() {}
+	
+	public void buy(Tile backgroundTile, Map map) {}
 	
 	public void render(Graphics2D g2) {
 		g2.drawImage(
@@ -63,6 +81,9 @@ public class Tile extends Entity{
 				(int)(getY() * TILESIZE), 
 				null);
 	}
-	
+
+	public void setMarked(boolean mark) {
+		marked = mark;
+	}
 
 }

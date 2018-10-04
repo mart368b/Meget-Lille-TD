@@ -10,7 +10,7 @@ import game.level.Map;
 
 public class TileHighlighter {	
 	
-	private static final int SELECT = 0, PLACING = 1;
+	public static final int SELECT = 0, PLACING = 1;
 	
 	private static final Color SELECT_COLOR_1 = new Color(0,255,255);
 	private static final Color SELECT_COLOR_2 = new Color(0,206,209);
@@ -24,8 +24,8 @@ public class TileHighlighter {
 	private Color c1, c2;
 	
 	private int x, y;
-	private int width = 2, height = 2;
-	private int currentMode = PLACING;
+	private int width = 1, height = 1;
+	private int currentMode = SELECT;
 	
 	private Color currentColor;
 	private boolean visible = false;
@@ -104,15 +104,18 @@ public class TileHighlighter {
 		}
 	}
 	
+	public Tile getMarkedTile() {
+		return map.getTile(x, y);
+	}
 	
-	public Tile[] getMarkedTiles() {
+	public ArrayList<Tile> getMarkedTiles() {
 		ArrayList<Tile> markedTiles = new ArrayList<Tile>();
 		for (int x0 = 0; x0 < width; x0 ++) {
 			for (int y0 = 0; y0 < width; y0 ++) {
 				markedTiles.add(map.getTile(x + x0, y + y0));
 			}
 		}
-		return markedTiles.toArray(new Tile[markedTiles.size()]);
+		return markedTiles;
 	}
 	
 	public boolean isBlocked() {
@@ -151,7 +154,7 @@ public class TileHighlighter {
 		return height * Tile.TILESIZE;
 	}
 	
-	public void setWidth(int widh) {
+	public void setWidth(int width) {
 		this.width = width;
 	}
 	
@@ -166,4 +169,9 @@ public class TileHighlighter {
 	public int getHeight() {
 		return height;
 	}
+	
+	public int getMode() {
+		return currentMode;
+	}
+	
 }

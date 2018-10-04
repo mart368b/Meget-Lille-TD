@@ -7,8 +7,6 @@ import javax.imageio.ImageIO;
 
 public class ImageTileSet {
 	
-	public static enum TileType{PATH, BUILD, UNBUILDABLE};
-	
 	private int tileSize;
 	private BufferedImage tileSheet;
 	private int width,
@@ -33,11 +31,11 @@ public class ImageTileSet {
 				BufferedImage subImage = tileSheet.getSubimage(tileSize * col, 
 						tileSize * row, tileSize, tileSize);
 				if(row == 0){
-					tiles.add(new ImageTile(id, subImage, TileType.PATH));
+					tiles.add(new ImageTile(id, subImage));
 				}else if(row < 3){
-					tiles.add(new ImageTile(id, subImage, TileType.UNBUILDABLE));
+					tiles.add(new ImageTile(id, subImage));
 				}else{
-					tiles.add(new ImageTile(id, subImage, TileType.BUILD));
+					tiles.add(new ImageTile(id, subImage));
 				}
 				id++;
 			}

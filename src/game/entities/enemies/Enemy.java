@@ -1,17 +1,20 @@
 package game.entities.enemies;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 import game.Game;
 import game.entities.AnimatedEntity;
+import game.entities.tiles.Tile;
 import game.level.WalkingPath;
+import gfx.HUD;
 import gfx.sprites.Sprite;
 
 public class Enemy extends AnimatedEntity {
 	
-	private int health;
-	private int speed;
+	private int health, maxHealth, speed;
 	private Sprite sprite;
 	private WalkingPath path;
 	
@@ -24,6 +27,7 @@ public class Enemy extends AnimatedEntity {
 	public Enemy(Sprite sprite, double x, double y, int animationSpeed, int health, int speed) {
 		super(x, y, sprite, animationSpeed);
 		this.health = health;
+		this.maxHealth = health;
 		this.speed = speed;
 		this.sprite = sprite; 
 	}
@@ -34,6 +38,7 @@ public class Enemy extends AnimatedEntity {
 	public Enemy(Sprite sprite, WalkingPath path, int animationSpeed, int health, int speed) {
 		super(path.getStartingX(), path.getStartingY(), sprite, animationSpeed);
 		this.health = health;
+		this.maxHealth = health;
 		this.speed = speed;
 		this.path = path;
 		this.sprite = sprite;
@@ -69,8 +74,7 @@ public class Enemy extends AnimatedEntity {
 		int dic = path.getDirection();
 		BufferedImage[] frames = sprite.getFrames(dic);
 		animation.setFrames(frames);
-		
-		if (progress > path.getLength()) {
+		if (progress >= path.getLength() - 1) {
 			end = true;
 		}
 	}
@@ -98,6 +102,9 @@ public class Enemy extends AnimatedEntity {
 	@Override
 	public void render(Graphics2D g2) {
 		super.render(g2);
+		
+		g2.setColor(HUD.healthColors.getColor(((health + 0.)/maxHealth) * (HUD.healthColors.size()-1) ));
+		g2.fill(new Rectangle2D.Double(getX() + 3, getY() - 7, (Tile.TILESIZE - 6) * ((health + 0.)/maxHealth), 8));
 	}
 	
 	public Enemy clone() {

@@ -5,6 +5,7 @@ import java.awt.event.MouseEvent;
 
 import game.entities.enemies.BasicEnemy;
 import game.entities.enemies.Enemy;
+import game.entities.tiles.TileLibrary;
 import game.state.states.menu_state;
 import game.state.states.input.BasicMouseInput;
 import game.state.states.player.Round;
@@ -29,7 +30,7 @@ public class StateManager implements BasicMouseInput {
 			gamestates[state.getValue()] = new levelPlayer(this, new Round[] {
 					new Round(new Enemy[] {new BasicEnemy()}, 10),
 					new Round(new Enemy[] {new BasicEnemy()}, 10)
-			});
+			}, TileLibrary.GRASS.getValue(), 20, 1200);
 		}
 		//New states will get added here
 	}

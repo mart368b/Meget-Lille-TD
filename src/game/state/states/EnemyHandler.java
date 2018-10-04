@@ -8,7 +8,7 @@ import game.entities.enemies.Enemy;
 public class EnemyHandler {
 	
 	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
-	private int lifeLost = 0;
+	private int lifesLost = 0;
 	
 	public EnemyHandler() {}
 
@@ -36,7 +36,7 @@ public class EnemyHandler {
 				if (e.reachedEnd()) {
 					enemies.remove(i);
 					i--;
-					lifeLost++;
+					lifesLost++;
 				}
 			}
 		}
@@ -46,5 +46,11 @@ public class EnemyHandler {
 		for (Enemy e: enemies) {
 			e.render(g2);
 		}
+	}
+	
+	public int getLifesLost() {
+		int l = lifesLost;
+		lifesLost = 0;
+		return l;
 	}
 }

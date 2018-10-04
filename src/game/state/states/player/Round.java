@@ -24,7 +24,7 @@ public class Round {
 	 * Spawn a Basic enemy on every spawn point
 	 */
 	public Enemy[] getWave(Map map){
-		if (releasedCount >= enemyCount - 1) {
+		if (releasedCount >= enemyCount) {
 			return null;
 		}
 		//Get spawnlocation from map and spawn enemies
@@ -52,7 +52,7 @@ public class Round {
 	}
 	
 	public boolean reachedEnd() {
-		return releasedCount >= enemyCount - 1;
+		return releasedCount >= enemyCount;
 	}
 	
 	//Track and see if all enemies are killed

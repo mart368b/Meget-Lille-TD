@@ -1,7 +1,10 @@
 package game.state.states.player;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+
 import game.Game;
 import game.entities.enemies.BasicEnemy;
 import game.entities.enemies.Enemy;
@@ -21,12 +24,20 @@ public class levelPlayer extends GameState {
 	private Map map;
 	private ImageTileSet tileset;
 	private Round[] rounds;
-	private static final int sleepTime = 10;
+	private static final int sleepTime = 20;
+	private static final int roundPauseTime = 120;
 	private int currentRound, time = 0;
 	private EnemyHandler handler = new EnemyHandler();
 	private TileHighlighter highlighter;
+	private Tile backgroundTile;
+	private int gold, lifes;
+	private boolean complete = false, victory = false, lose = true;
 
-	public levelPlayer(StateManager sm, Round[] rounds) {
+	public levelPlayer(StateManager sm, Round[] rounds, Tile backgroundTile, int lifes, int gold) {
+		this.backgroundTile = backgroundTile;
+		this.gold = gold;
+		this.lifes = lifes;
+		HUD.displayResources(gold, lifes);
 		this.sm = sm;
 		init();
 		this.rounds = rounds;
@@ -42,17 +53,51 @@ public class levelPlayer extends GameState {
 
 	@Override
 	public void tick() {
-		if (time++ > sleepTime) {
-			time = 0;
-			Round currentRound = rounds[this.currentRound]; 
-			if (!currentRound.reachedEnd()) {
-				handler.addEnemyWave(currentRound.getWave(map));
+		time++;
+		Round currentRound = rounds[this.currentRound];
+		if (currentRound.reachedEnd()) {
+			if (time > roundPauseTime) {
+				time = sleepTime + 1;
+				this.currentRound++;
+				if (this.currentRound >= rounds.length) {
+					setVictory();
+				}else {
+					currentRound = rounds[this.currentRound];					
+				}
 			}
 		}
+		
+		if (!currentRound.reachedEnd() && time > sleepTime) {
+			time = 0;
+			handler.addEnemyWave(currentRound.getWave(map));
+		}
+		
 		handler.tick();
 		highlighter.tick();
-		//whenever everything is over
-		//close
+		
+		int lostLifes = handler.getLifesLost();
+		if (lostLifes > 0) {
+			lifes -= lostLifes;
+			if (lifes < 0) {
+				lifes = 0;
+				setLose();
+			}
+			HUD.displayResources(gold, lifes);
+		}
+	}
+	
+	private void setVictory() {
+		complete = true;
+		//TODO add victory screen
+		victory = true;
+		//close();
+	}
+	
+	private void setLose() {
+		complete = true;
+		//TODO add lose screen
+		lose = true;
+		//close();
 	}
 	
 	public void close() {
@@ -65,24 +110,29 @@ public class levelPlayer extends GameState {
 		//g2.drawImage(map.getTexture(map.getTile(x, y), 0).getImage(),
 		map.render(g2);
 		
-		g2.drawImage(HUD.image, 960, 0, null);
 		//render enemies from Round Object
-		handler.render(g2);
-		
+		handler.render(g2);		
 		highlighter.render(g2);
+		
+		HUD.render(g2);
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		Tile[] markedTiles = highlighter.getMarkedTiles();
+		ArrayList<Tile> markedTiles = highlighter.getMarkedTiles();
 		String s = "";
 		for (int x0 = 0; x0 < highlighter.getWidth(); x0 ++) {
 			for (int y0 = 0; y0 < highlighter.getHeight(); y0 ++) {
-				s += markedTiles[x0 + y0 * highlighter.getWidth()].toString() + " ";
+				Tile t = markedTiles.get(x0 + y0 * highlighter.getWidth());
+				s += t.isBuyable() + " ";
+				if (t.isBuyable() && gold >= t.getPrice()) {
+					gold -= t.getPrice();
+					HUD.displayResources(gold, lifes);
+					t.buy(backgroundTile, map);
+				}
 			}
 			s += "\n";
 		}
-		System.out.println(s);
 	}
 
 	@Override
@@ -91,7 +141,17 @@ public class levelPlayer extends GameState {
 			highlighter.setVisible(false);
 		}else {
 			highlighter.setVisible(true);
+			highlighter.getMarkedTile().setMarked(false);
 			highlighter.moveTo(e.getX() - highlighter.getScreenWidth()/2 + 16, e.getY()  - highlighter.getScreenHeight()/2 + 16);
+			Tile t = highlighter.getMarkedTile();
+			t.setMarked(true);
+			if (t.isBuyable()) {
+				if (t.getPrice() > gold) {
+					HUD.setTextColor(Color.RED);
+				}else {
+					HUD.setTextColor(Color.WHITE);
+				}
+			}
 		}
 	}
 

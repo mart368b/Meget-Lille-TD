@@ -20,8 +20,8 @@ public class Game{
 	
 	public static int tps = config.getInt("graphics.tps");
 	
-    public final int ONE_SECOND = 1000000000;
-    private int outputRate = 20;
+    public final double ONE_SECOND = 1000000000.;
+    private int outputRate = 5;
 	private Window window;
 	private InputHandler handler = new InputHandler();
 	
@@ -51,46 +51,42 @@ public class Game{
 	// main game loop
 	public void run()
     {
-        long lt = System.nanoTime();
-        long t;
-        double dt;
+        long last = System.nanoTime();
+        double dt = 0;
+        double TICK_LENGTH = tps / ONE_SECOND;
         int ticks = 0;
         int renders = 0;
-        int timer = 0;
-        int middleTimer = 0;
-        while (true) {
-            t = System.nanoTime();
-            dt = (t - lt);
-            for (int i = 1; i <= Math.floor(dt/(ONE_SECOND/tps)); i++ ) {
-                tick(dt/1000000);
-                ticks++;
-            }
-            lt = t;
-
-            timer += dt;
-            
-            if (timer >= ONE_SECOND) {
-            	middleTimer++;
-            	if (middleTimer >= outputRate) {
-            		System.out.println("tps: " + Integer.toString(ticks/outputRate) + " fps: " + Integer.toString(renders/outputRate));
-                    ticks = 0;
-                    renders = 0;
-                    middleTimer = 0;
-            	}
-            	timer = timer - ONE_SECOND;
-	        }
-            
-            render();
-            renders++;
-            
-            long waitUntil = lt + ONE_SECOND/tps;
+        long nextDebug = (long) (System.nanoTime() + (ONE_SECOND)*outputRate);
+        while (true) {            
+            long now = System.nanoTime();
+        	long dNs = now - last;
+        	last = now;
+        	dt += dNs * TICK_LENGTH;
+        	int missingTicks = (int) Math.floor(dt);
+        	dt -= missingTicks;
+        	for (int tick = 0; tick < missingTicks; tick++) { 
+        		tick();
+        		ticks++;
+        	}
+        	
+        	render();
+        	renders++;
+        	
+        	if(now > nextDebug){
+        		System.out.println("tps: " + ticks/outputRate + " fps: " + renders/outputRate);
+        		ticks = 0;
+        		renders = 0;
+        		nextDebug = (long) (now + (ONE_SECOND)*outputRate);
+        	}
+        	
+        	double waitUntil = last + TICK_LENGTH*(1 - dt);
             while(waitUntil > System.nanoTime()){
                 ;
             }
         }
     }
 
-	public void tick(double dt) {
+	public void tick() {
 		// do movement here
 		// called once every 60 second
 		sm.tick();
