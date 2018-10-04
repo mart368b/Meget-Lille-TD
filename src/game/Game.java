@@ -37,7 +37,6 @@ public class Game{
 		handler.setTarget(sm);
 		
 		new SplashScreenDriver();
-		
 		initDisplay();
 		run();
 	}

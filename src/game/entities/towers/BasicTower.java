@@ -2,7 +2,6 @@ package game.entities.towers;
 
 import java.awt.Graphics2D;
 
-import game.entities.Tower;
 import gfx.sprites.SpriteManager;
 
 public class BasicTower extends Tower {
@@ -16,7 +15,8 @@ public class BasicTower extends Tower {
 	
 	public void tick(){}
 	
-	public void render(Graphics2D g){
-		g.drawImage(SpriteManager.getSprite(spriteNR).getFrames(line)[getLvl()], getX(), getY(), null);
+	public void render(Graphics2D g2){
+		super.render(g2);
+		g2.drawImage(SpriteManager.getSprite(spriteNR).getFrames(line)[getLvl()],(int) getX(),(int) getY(), null);
 	}
 }

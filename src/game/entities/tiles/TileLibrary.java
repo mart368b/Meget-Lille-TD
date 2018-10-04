@@ -55,8 +55,8 @@ public enum TileLibrary {
     }
 	
 	public Tile getValue() {
-			return tile; 
-		}
+		return tile; 
+	}
 	
 	public static Tile getTile(char c) {
 		for (TileLibrary lib: TileLibrary.values()) {

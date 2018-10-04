@@ -6,10 +6,11 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import game.Game;
-import game.entities.Tower;
+
 import javax.swing.text.Highlighter.Highlight;
 
 import game.entities.tiles.Tile;
+import game.entities.towers.Tower;
 import game.level.Map;
 import game.math.Point2D;
 import game.state.GameState;
@@ -29,7 +30,8 @@ public class levelPlayer extends GameState {
 	private static final int sleepTime = 20;
 	private static final int roundPauseTime = 10*60;
 	private int currentRound, time = 0;
-	private EnemyHandler handler = new EnemyHandler();
+	private EnemyHandler enemyHandler = new EnemyHandler();
+	private TowerHandler towerHandler;
 	private TileHighlighter highlighter;
 	private Tile backgroundTile;
 	private int gold, lifes;
@@ -50,6 +52,7 @@ public class levelPlayer extends GameState {
 	@Override
 	public void init() {
 		map = new Map("level1_0");
+		towerHandler = new TowerHandler(map);
 		highlighter = new TileHighlighter(map);
 		tileset = TileSetManager.getTileset(0);
 		this.currentRound = 0;
@@ -95,10 +98,10 @@ public class levelPlayer extends GameState {
 	@Override
 	public void tick() {
 		
-		handler.tick();
+		enemyHandler.tick();
 		highlighter.tick();
 		
-		int lostLifes = handler.getLifesLost();
+		int lostLifes = enemyHandler.getLifesLost();
 		if (lostLifes > 0) {
 			lifes -= lostLifes;
 			if (lifes < 0) {
@@ -117,7 +120,7 @@ public class levelPlayer extends GameState {
 	private void manageRounds() {
 		Round currentRound = rounds[this.currentRound];
 		if (currentRound.reachedEnd()) {
-			if (handler.isEmpty()) {
+			if (enemyHandler.isEmpty()) {
 				time++;
 			}
 			if (time > roundPauseTime) {
@@ -135,7 +138,7 @@ public class levelPlayer extends GameState {
 		
 		if (!currentRound.reachedEnd() && time > sleepTime) {
 			time = 0;
-			handler.addEnemyWave(currentRound.getWave(map));
+			enemyHandler.addEnemyWave(currentRound.getWave(map));
 		}
 	}
 	
@@ -167,10 +170,12 @@ public class levelPlayer extends GameState {
 		}
 		
 		//render enemies from Round Object
-		handler.render(g2);		
+		enemyHandler.render(g2);		
 		highlighter.render(g2);
 		
 		HUD.render(g2);
+		
+		towerHandler.render(g2);
 	}
 
 	@Override
@@ -215,6 +220,7 @@ public class levelPlayer extends GameState {
 	public void mouseMoved(MouseEvent e) {
 		if (e.getX() > 30 * Tile.TILESIZE) {
 			highlighter.setVisible(false);
+			towerHandler.markTower(e.getX(), e.getY());
 		}else {
 			highlighter.getMarkedTile().setMarked(false);
 			highlighter.moveTo(e.getX() - highlighter.getScreenWidth()/2 + 16, e.getY()  - highlighter.getScreenHeight()/2 + 16);
