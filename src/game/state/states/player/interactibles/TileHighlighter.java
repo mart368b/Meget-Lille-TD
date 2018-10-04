@@ -25,12 +25,13 @@ public class TileHighlighter {
 	
 	private int x, y;
 	private int width = 1, height = 1;
-	private int currentMode = SELECT;
+	private int currentMode = PLACING;
 	
 	private Color currentColor;
 	private boolean visible = false;
 	private double t = 0, dt = 0.5/Game.tps;
 	private Map map;
+	private boolean occupied = false;
 	
 	public TileHighlighter(Map map) {
 		c1 = SELECT_COLOR_1;
@@ -71,12 +72,18 @@ public class TileHighlighter {
 			if (isBlocked()) {
 				c1 = PLACING_OCCUPIED_COLOR_1;
 				c2 = PLACING_OCCUPIED_COLOR_2;
+				occupied = true;
 			}else {
 				c1 = PLACING_COLOR_1;
 				c2 = PLACING_COLOR_2;
+				occupied = false;
 			}
 		}
 		currentColor = getColor(t);
+	}
+	
+	public boolean isOccupied() {
+		return occupied;
 	}
 	
 	public void moveTo(int x, int y) {
@@ -85,6 +92,17 @@ public class TileHighlighter {
 			this.x = 30 - this.width; 
 		}
 		this.y = y/Tile.TILESIZE;
+		if (this.y + height > 30) {
+			this.y = 30 - this.width; 
+		}
+	}
+	
+	public void moveToTile(int x, int y) {
+		this.x = x;
+		if (this.x + width > 30) {
+			this.x = 30 - this.width; 
+		}
+		this.y = y;
 		if (this.y + height > 30) {
 			this.y = 30 - this.width; 
 		}
@@ -172,6 +190,10 @@ public class TileHighlighter {
 	
 	public int getMode() {
 		return currentMode;
+	}
+	
+	public boolean isVisible() {
+		return visible;
 	}
 	
 }

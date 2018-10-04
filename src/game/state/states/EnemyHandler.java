@@ -2,6 +2,7 @@ package game.state.states;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import game.entities.enemies.Enemy;
 
@@ -42,9 +43,14 @@ public class EnemyHandler {
 		}
 	}
 	
+	public boolean isEmpty() {
+		return enemies.size() == 0;
+	}
+	
 	public void render(Graphics2D g2) {
-		for (Enemy e: enemies) {
-			e.render(g2);
+		Iterator<Enemy> ite = enemies.stream().sorted((e1, e2)->{return (int) (e1.getY() - e2.getY());}).iterator();
+		while (ite.hasNext()) {
+			ite.next().render(g2);
 		}
 	}
 	

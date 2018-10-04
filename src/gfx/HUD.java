@@ -41,10 +41,14 @@ public class HUD {
 		}
 	}
 	
-	public static void drawText(Graphics2D g2, String text, int x, int y) {
+	public static void drawCenteredText(Graphics2D g2, String text, int x, int y, int tileWidth) {
 		g2.setColor(priceTextColor);
 		g2.setFont(textFont);
-		g2.drawString(text, x, y);
+		FontMetrics fontMetrics = g2.getFontMetrics();
+		int width = tileWidth * Tile.TILESIZE;
+		int textWidth = fontMetrics.stringWidth(text);
+		int offset = width - textWidth;
+		g2.drawString(text, x + offset/2, y);
 	}
 
 	public static void render(Graphics2D g2) {

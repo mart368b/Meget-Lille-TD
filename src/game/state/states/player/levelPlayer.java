@@ -7,10 +7,11 @@ import java.util.ArrayList;
 
 import game.Game;
 import game.entities.Tower;
+import javax.swing.text.Highlighter.Highlight;
+
 import game.entities.tiles.Tile;
-import game.entities.towers.BasicTower;
-import game.entities.towers.HomeTower;
 import game.level.Map;
+import game.math.Point2D;
 import game.state.GameState;
 import game.state.StateManager;
 import game.state.StateTypes;
@@ -26,14 +27,15 @@ public class levelPlayer extends GameState {
 	private ImageTileSet tileset;
 	private Round[] rounds;
 	private static final int sleepTime = 20;
-	private static final int roundPauseTime = 120;
+	private static final int roundPauseTime = 10*60;
 	private int currentRound, time = 0;
 	private EnemyHandler handler = new EnemyHandler();
 	private TileHighlighter highlighter;
 	private Tile backgroundTile;
 	private int gold, lifes;
+	
 	private ArrayList<Tower> towers = new ArrayList<Tower>();
-	private boolean complete = false, victory = false, lose = true;
+	private boolean finished = false, victory = false, lose = true;
 
 	public levelPlayer(StateManager sm, Round[] rounds, Tile backgroundTile, int lifes, int gold) {
 		this.backgroundTile = backgroundTile;
@@ -92,24 +94,6 @@ public class levelPlayer extends GameState {
 
 	@Override
 	public void tick() {
-		time++;
-		Round currentRound = rounds[this.currentRound];
-		if (currentRound.reachedEnd()) {
-			if (time > roundPauseTime) {
-				time = sleepTime + 1;
-				this.currentRound++;
-				if (this.currentRound >= rounds.length) {
-					setVictory();
-				}else{
-					currentRound = rounds[this.currentRound];					
-				}
-			}
-		}
-		
-		if (!currentRound.reachedEnd() && time > sleepTime) {
-			time = 0;
-			handler.addEnemyWave(currentRound.getWave(map));
-		}
 		
 		handler.tick();
 		highlighter.tick();
@@ -123,17 +107,47 @@ public class levelPlayer extends GameState {
 			}
 			HUD.displayResources(gold, lifes);
 		}
+		
+		if (!finished) {
+			manageRounds();
+		}
+			
+	}
+	
+	private void manageRounds() {
+		Round currentRound = rounds[this.currentRound];
+		if (currentRound.reachedEnd()) {
+			if (handler.isEmpty()) {
+				time++;
+			}
+			if (time > roundPauseTime) {
+				time = sleepTime + 1;
+				this.currentRound++;
+				if (this.currentRound >= rounds.length) {
+					setVictory();
+				}else{
+					currentRound = rounds[this.currentRound];					
+				}
+			}
+		}else {
+			time++;
+		}
+		
+		if (!currentRound.reachedEnd() && time > sleepTime) {
+			time = 0;
+			handler.addEnemyWave(currentRound.getWave(map));
+		}
 	}
 	
 	private void setVictory() {
-		complete = true;
+		finished = true;
 		//TODO add victory screen
 		victory = true;
 		//close();
 	}
 	
 	private void setLose() {
-		complete = true;
+		finished = true;
 		//TODO add lose screen
 		lose = true;
 		//close();
@@ -161,20 +175,40 @@ public class levelPlayer extends GameState {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		ArrayList<Tile> markedTiles = highlighter.getMarkedTiles();
-		String s = "";
-		for (int x0 = 0; x0 < highlighter.getWidth(); x0 ++) {
-			for (int y0 = 0; y0 < highlighter.getHeight(); y0 ++) {
-				Tile t = markedTiles.get(x0 + y0 * highlighter.getWidth());
-				s += t.isBuyable() + " ";
-				if (t.isBuyable() && gold >= t.getPrice()) {
-					gold -= t.getPrice();
-					HUD.displayResources(gold, lifes);
-					t.buy(backgroundTile, map);
-				}
+		switch (highlighter.getMode()) {
+		case TileHighlighter.SELECT:
+			buyTile();
+			break;
+		case TileHighlighter.PLACING:
+			if (e.getButton() != e.BUTTON1) {
+				highlighter.changeMode(TileHighlighter.SELECT);
+				mouseMoved(e);
 			}
-			s += "\n";
+			buyTower();
+			break;
 		}
+	}
+	
+	private void buyTower() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void buyTile() {
+		if (highlighter.isVisible()) {
+			Tile markedTile = highlighter.getMarkedTile();
+			if (markedTile.getPrice() <= gold) {
+				gold -= markedTile.getPrice();
+				HUD.displayResources(gold, lifes);
+				markedTile.buy(backgroundTile, map);
+				highlighter.setVisible(false);
+			}
+		}
+	}
+
+	public void cancelPlacing() {
+		highlighter.changeMode(TileHighlighter.SELECT);
+		// drop draged object
 	}
 
 	@Override
@@ -182,19 +216,42 @@ public class levelPlayer extends GameState {
 		if (e.getX() > 30 * Tile.TILESIZE) {
 			highlighter.setVisible(false);
 		}else {
-			highlighter.setVisible(true);
 			highlighter.getMarkedTile().setMarked(false);
 			highlighter.moveTo(e.getX() - highlighter.getScreenWidth()/2 + 16, e.getY()  - highlighter.getScreenHeight()/2 + 16);
-			Tile t = highlighter.getMarkedTile();
-			t.setMarked(true);
-			if (t.isBuyable()) {
-				if (t.getPrice() > gold) {
-					HUD.setTextColor(Color.RED);
-				}else {
-					HUD.setTextColor(Color.WHITE);
-				}
+			switch (highlighter.getMode()) {
+			case TileHighlighter.SELECT:
+				moveWhileSelecting(e);
+				break;
+			case TileHighlighter.PLACING:
+				moveHighlightWhilePlacing(e);
+				break;
 			}
 		}
+	}
+	
+	private void moveWhileSelecting(MouseEvent e) {
+		Tile t = highlighter.getMarkedTile();
+		t.setMarked(true);
+		if (t.isBuyable()) {
+			t.setMarked(false);
+			highlighter.setVisible(true);
+			Point2D tileOrigin = t.getOrigin();
+			highlighter.moveToTile((int) tileOrigin.getX(), (int) tileOrigin.getY());
+			highlighter.getMarkedTile().setMarked(true);
+			highlighter.setDimension(t.getWidth(), t.getHeight());
+			if (t.getPrice() > gold) {
+				HUD.setTextColor(Color.RED);
+			}else {
+				HUD.setTextColor(Color.WHITE);
+			}
+		}else {
+			highlighter.setVisible(false);
+		}
+	}
+
+	public void moveHighlightWhilePlacing(MouseEvent e) {
+		highlighter.setVisible(true);
+		//colouring is done inside TileHiglight
 	}
 
 	@Override

@@ -11,6 +11,7 @@ public class Tile extends Entity{
 	public static int TILESIZE = 32;
 	
 	protected char id;
+	protected int width = 1, height = 1;
 	protected int imgIndex, setIndex;
 	protected boolean obstical = false, marked = false;
 
@@ -73,6 +74,14 @@ public class Tile extends Entity{
 	public void highlight() {}
 	
 	public void buy(Tile backgroundTile, Map map) {}
+	
+	public int getWidth() {
+		return width;
+	}
+	
+	public int getHeight() {
+		return height;
+	}
 	
 	public void render(Graphics2D g2) {
 		g2.drawImage(
