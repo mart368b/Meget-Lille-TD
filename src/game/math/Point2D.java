@@ -23,6 +23,14 @@ public class Point2D{
 	}
 	
 	/**
+	 * Create a new Point
+	 */
+	public Point2D(Point2D p) {
+		this.x = p.getX();
+		this.y = p.getY();
+	}
+	
+	/**
 	 * Create a deep copy of the instance
 	 */
 	public Point2D clone() {

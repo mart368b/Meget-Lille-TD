@@ -1,10 +1,9 @@
 package game.entities.tiles;
 
 import game.level.Map;
+import game.math.Point2D;
 
 public class LargeBuyableTile extends BuyableTile{
-	
-	private int width, height;
 	private int[] pos;
 
 	public LargeBuyableTile(char id, int imgIndex, int setIndex, int price, int width, int height, int[] position) {
@@ -44,4 +43,10 @@ public class LargeBuyableTile extends BuyableTile{
 		}
 	}
 
+	@Override
+	public Point2D getOrigin() {
+		Point2D p = new Point2D(this);
+		p.translate(-pos[0], -pos[1]);
+		return p;
+	}
 }

@@ -20,10 +20,10 @@ public enum TileLibrary {
 	SMALL_TREE		(new BuyableTile('\u273D', ImageIndex.TREE, 			0,		100)),
 	TREE_STUP		(new BuyableTile('\u271B', ImageIndex.TREE_STUP, 		0,		100)),
 	//large buyable
-	BIG_STONE_TOP	(new LargeBuyableTile('\u25E0', ImageIndex.BIG_STONE_TOP, 	0,	100, 1, 2, new int[] { 0, 0})),
-	BIG_STONE_BUTTOM(new LargeBuyableTile('\u25E1', ImageIndex.BIG_STONE_BUTTOM,0,	100, 1, 2, new int[] { 0, 1})),
-	BIG_TREE_TOP	(new LargeBuyableTile('\u2724', ImageIndex.BIG_TREE_TOP, 	0,	100, 1, 2, new int[] { 0, 0})),
-	BIG_TREE_BUTTOM	(new LargeBuyableTile('\u2723', ImageIndex.BIG_TREE_BUTTOM, 0,	100, 1, 2, new int[] { 0, 1})),
+	BIG_STONE_TOP	(new LargeBuyableTile('\u25E0', ImageIndex.BIG_STONE_TOP, 	0,	300, 1, 2, new int[] { 0, 0})),
+	BIG_STONE_BUTTOM(new LargeBuyableTile('\u25E1', ImageIndex.BIG_STONE_BUTTOM,0,	300, 1, 2, new int[] { 0, 1})),
+	BIG_TREE_TOP	(new LargeBuyableTile('\u2724', ImageIndex.BIG_TREE_TOP, 	0,	300, 1, 2, new int[] { 0, 0})),
+	BIG_TREE_BUTTOM	(new LargeBuyableTile('\u2723', ImageIndex.BIG_TREE_BUTTOM, 0,	300, 1, 2, new int[] { 0, 1})),
 	
 	//default tiles
 	GRASS			(new Tile(    '\u25A1', ImageIndex.GRASS, 				0)),

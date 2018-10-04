@@ -32,6 +32,10 @@ public class Entity extends Point2D{
 		return new Entity(getX(), getY());
 	}
 	
+	public Point2D getOrigin() {
+		return this;
+	}
+	
 	public void tick(){}
 	
 	public void render(Graphics2D g2){}

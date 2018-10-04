@@ -42,7 +42,7 @@ public class BuyableTile extends Obstical{
 	public void render(Graphics2D g2) {
 		super.render(g2);
 		if (marked && !sold) {
-			HUD.drawText(g2, Integer.toString(price), (int)(getX() * TILESIZE), (int)(getY() * TILESIZE));
+			HUD.drawCenteredText(g2, Integer.toString(price), (int)(getX() * TILESIZE), (int)(getY() * TILESIZE) - 6, getWidth());
 		}
 	}
 	
