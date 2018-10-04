@@ -3,6 +3,8 @@ package game.entities.tiles;
 import java.awt.Graphics2D;
 
 import game.entities.Entity;
+import gfx.tiles.ImageTile;
+import gfx.tiles.ImageTileSet.TileType;
 import gfx.tiles.TileSetManager;
 
 public class Tile extends Entity{
@@ -47,7 +49,11 @@ public class Tile extends Entity{
 		return id == t.getId();
 	}
 	public boolean isObstical() {
-		return obstical;
+		ImageTile tile = TileSetManager.getTileset(setIndex).getTile(imgIndex);
+		if(tile.getType() == TileType.PATH || tile.getType() == TileType.UNBUILDABLE){
+			return true;
+		}
+		return false;
 	}
 	
 	public void render(Graphics2D g2) {
