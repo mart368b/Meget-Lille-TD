@@ -175,6 +175,8 @@ public class levelPlayer extends GameState {
 		highlighter.render(g2);
 		
 		HUD.render(g2);
+		HUD.drawCenteredText(g2, currentRound+1 + "", 555, 785, 32);
+		HUD.drawCenteredText(g2, rounds.length + "", 665, 785, 32);
 		
 		towerHandler.render(g2);
 	}
