@@ -41,7 +41,7 @@ public class Tower extends Entity {
 	
 	public void render(Graphics2D g2){
 		if (marked) {
-			HUD.drawCenteredText(g2, Integer.toString(getCost()), (int) getX(), (int) getY() - 6, 1);
+			HUD.drawCenteredText(g2, Integer.toString(getCost()), (int) getX() + 24, (int) getY() + 94, 1);
 		}
 	}
 	
