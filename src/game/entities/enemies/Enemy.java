@@ -1,6 +1,5 @@
 package game.entities.enemies;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -9,6 +8,7 @@ import game.Game;
 import game.entities.AnimatedEntity;
 import game.entities.tiles.Tile;
 import game.level.WalkingPath;
+import game.math.Point2D;
 import gfx.HUD;
 import gfx.sprites.Sprite;
 
@@ -64,6 +64,12 @@ public class Enemy extends AnimatedEntity {
 		}
 	}
 	
+	public Point2D getCenter() {
+		Point2D p = new Point2D(this);
+		p.translate(Tile.TILESIZE/2, Tile.TILESIZE/2);
+		return p;
+	}
+	
 	/**
 	 * move Enemy
 	 */
@@ -113,5 +119,9 @@ public class Enemy extends AnimatedEntity {
 	
 	public Enemy clone(WalkingPath path) {
 		return new Enemy(sprite, path, animation.getAnimationSpeed(), health, speed);
+	}
+	
+	public double getProgress() {
+		return progress;
 	}
 }

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import game.entities.enemies.Enemy;
+import game.entities.tiles.Tile;
+import game.math.Point2D;
 
 public class EnemyHandler {
 	
@@ -58,5 +60,15 @@ public class EnemyHandler {
 		int l = lifesLost;
 		lifesLost = 0;
 		return l;
+	}
+
+	public ArrayList<Enemy> getEnemiesWithinCircle(Point2D point2d, double range) {
+		ArrayList<Enemy> enemiesWithinRange = new ArrayList<Enemy>();
+		for (Enemy e: enemies) {
+			if (e.getCenter().distance(point2d) < range) {
+				enemiesWithinRange.add(e);
+			}
+		}
+		return enemiesWithinRange;
 	}
 }

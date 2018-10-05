@@ -52,8 +52,8 @@ public class levelPlayer extends GameState {
 	@Override
 	public void init() {
 		map = new Map("level1_0");
-		towerHandler = new TowerHandler(map);
-		highlighter = new TileHighlighter(map);
+		towerHandler = new TowerHandler(map, enemyHandler);
+		highlighter = new TileHighlighter(map, towerHandler);
 		tileset = TileSetManager.getTileset(0);
 		this.currentRound = 0;
 		
@@ -99,6 +99,7 @@ public class levelPlayer extends GameState {
 	public void tick() {
 		
 		enemyHandler.tick();
+		towerHandler.tick();
 		highlighter.tick();
 		
 		int lostLifes = enemyHandler.getLifesLost();
@@ -182,27 +183,43 @@ public class levelPlayer extends GameState {
 	public void mousePressed(MouseEvent e) {
 		switch (highlighter.getMode()) {
 		case TileHighlighter.SELECT:
-			buyTile();
+			if (e.getX() > 960) {
+				towerHandler.grabTower(e.getX(), e.getY(), highlighter);
+			}else {
+				Tower tower = towerHandler.getTower(e.getX() / Tile.TILESIZE, e.getY() / Tile.TILESIZE);
+				if (tower != null && tower.getCost() != -1 && gold >= tower.getCost()) {
+					gold -= tower.getCost();
+					HUD.displayResources(gold, lifes);
+					tower.lvlUp();
+				}else {
+					buyTile();					
+				}
+			}
 			break;
 		case TileHighlighter.PLACING:
 			if (e.getButton() != e.BUTTON1) {
-				highlighter.changeMode(TileHighlighter.SELECT);
+				cancelPlacing();
 				mouseMoved(e);
+				break;
 			}
-			buyTower();
+			if (!highlighter.isOccupied() && gold >= towerHandler.getHeldTower().getCost()) {
+				gold -= towerHandler.getHeldTower().getCost();
+				HUD.displayResources(gold, lifes);
+				buyTower();
+			}
 			break;
 		}
 	}
 	
 	private void buyTower() {
-		// TODO Auto-generated method stub
+		towerHandler.placeTower(highlighter.getScreenX(), highlighter.getScreenY());
 		
 	}
 
 	private void buyTile() {
 		if (highlighter.isVisible()) {
 			Tile markedTile = highlighter.getMarkedTile();
-			if (markedTile.getPrice() <= gold) {
+			if (markedTile.isBuyable() && markedTile.getPrice() <= gold) {
 				gold -= markedTile.getPrice();
 				HUD.displayResources(gold, lifes);
 				markedTile.buy(backgroundTile, map);
@@ -213,23 +230,29 @@ public class levelPlayer extends GameState {
 
 	public void cancelPlacing() {
 		highlighter.changeMode(TileHighlighter.SELECT);
+		towerHandler.releaseTower();
 		// drop draged object
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
+		if (highlighter.getMode() == TileHighlighter.SELECT) {
+			towerHandler.markTower(e.getX(), e.getY());
+		}
 		if (e.getX() > 30 * Tile.TILESIZE) {
 			highlighter.setVisible(false);
-			towerHandler.markTower(e.getX(), e.getY());
 		}else {
 			highlighter.getMarkedTile().setMarked(false);
-			highlighter.moveTo(e.getX() - highlighter.getScreenWidth()/2 + 16, e.getY()  - highlighter.getScreenHeight()/2 + 16);
+			int x = e.getX() - highlighter.getScreenWidth()/2 + 16;
+			int y = e.getY()  - highlighter.getScreenHeight()/2 + 16;
+			highlighter.moveTo( x, y );
 			switch (highlighter.getMode()) {
 			case TileHighlighter.SELECT:
 				moveWhileSelecting(e);
 				break;
 			case TileHighlighter.PLACING:
 				moveHighlightWhilePlacing(e);
+				towerHandler.moveHeldTower(highlighter.getScreenX(), highlighter.getScreenY());
 				break;
 			}
 		}
@@ -237,6 +260,7 @@ public class levelPlayer extends GameState {
 	
 	private void moveWhileSelecting(MouseEvent e) {
 		Tile t = highlighter.getMarkedTile();
+		Tower tower;
 		t.setMarked(true);
 		if (t.isBuyable()) {
 			t.setMarked(false);
@@ -250,6 +274,10 @@ public class levelPlayer extends GameState {
 			}else {
 				HUD.setTextColor(Color.WHITE);
 			}
+		}else if((tower = towerHandler.getTower(e.getX() / Tile.TILESIZE, e.getY() / Tile.TILESIZE)) != null){
+			highlighter.moveTo((int)(tower.getX()), (int)(tower.getY()));
+			highlighter.setDimension(tower.getWidth(), tower.getHeight());
+			highlighter.setVisible(true);
 		}else {
 			highlighter.setVisible(false);
 		}

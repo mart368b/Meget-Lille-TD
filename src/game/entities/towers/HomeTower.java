@@ -2,21 +2,28 @@ package game.entities.towers;
 
 import java.awt.Graphics2D;
 
-import gfx.sprites.SpriteManager;
+import game.state.states.EnemyHandler;
 
 public class HomeTower extends Tower {
-	
-	private final int spriteNR = 21;
-	private final int line = 0;
 
 	public HomeTower(int[] damage, int[] cost, int[] speed, String[] lore, int x, int y) {
-		super(damage, cost, speed, lore, x, y);
+		super(damage, cost, speed, lore, x, y, 21, 0);
 	}
 	
-	public void tick(){}
+	public HomeTower(int[] damage, int[] cost, int[] speed, String[] lore, int x, int y, boolean placed) {
+		super(damage, cost, speed, lore, x, y, 21, 0, true);
+	}
+	
+	public HomeTower clone(double x, double y) {
+		return new HomeTower(damage, cost, speed, lore,(int) x,(int) y, true);
+	}
+	
+	@Override
+	public void tick(EnemyHandler enemyHandler){
+		
+	}
 	
 	public void render(Graphics2D g2){
 		super.render(g2);
-		g2.drawImage(SpriteManager.getSprite(spriteNR).getFrames(line)[getLvl()],(int) getX(),(int) getY(), null);
 	}
 }

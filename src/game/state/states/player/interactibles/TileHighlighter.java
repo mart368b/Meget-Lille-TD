@@ -6,7 +6,9 @@ import java.util.ArrayList;
 
 import game.Game;
 import game.entities.tiles.Tile;
+import game.entities.towers.Tower;
 import game.level.Map;
+import game.state.states.player.TowerHandler;
 
 public class TileHighlighter {	
 	
@@ -25,19 +27,21 @@ public class TileHighlighter {
 	
 	private int x, y;
 	private int width = 1, height = 1;
-	private int currentMode = PLACING;
+	private int currentMode = SELECT;
 	
 	private Color currentColor;
 	private boolean visible = false;
 	private double t = 0, dt = 0.5/Game.tps;
 	private Map map;
 	private boolean occupied = false;
+	private TowerHandler towerHandler;
 	
-	public TileHighlighter(Map map) {
+	public TileHighlighter(Map map, TowerHandler towerHandler) {
 		c1 = SELECT_COLOR_1;
 		c2 = SELECT_COLOR_2;
 		currentColor = c1;
 		this.map = map;
+		this.towerHandler = towerHandler;
 	}
 	
 	public void changeMode(int mode) {
@@ -137,11 +141,14 @@ public class TileHighlighter {
 	}
 	
 	public boolean isBlocked() {
-		ArrayList<Tile> markedTiles = new ArrayList<Tile>();
 		for (int x0 = 0; x0 < width; x0 ++) {
 			for (int y0 = 0; y0 < width; y0 ++) {
 				Tile tile = map.getTile(x + x0, y + y0);
 				if (tile.isObstical()) {
+					return true;
+				}
+				Tower tower = towerHandler.getTower(x + x0, y + y0);
+				if (tower != null) {
 					return true;
 				}
 			}

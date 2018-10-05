@@ -36,9 +36,9 @@ public enum TowerLibary {
 			100
 	}, new int[] {
 			//speed
-			1,
-			2,
-			3
+			10,
+			20,
+			25
 	}, new String[] {
 			//lore
 			"so basic",
