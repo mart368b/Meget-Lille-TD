@@ -29,6 +29,10 @@ public class StateManager implements BasicMouseInput {
 		}else if(state == StateTypes.LEVEL1_0){
 			gamestates[state.getValue()] = new levelPlayer(this, new Round[] {
 					new Round(new Enemy[] {new BasicEnemy()}, 10),
+					new Round(new Enemy[] {new BasicEnemy()}, 10),
+					new Round(new Enemy[] {new BasicEnemy()}, 10),
+					new Round(new Enemy[] {new BasicEnemy()}, 10),
+					new Round(new Enemy[] {new BasicEnemy()}, 10),
 					new Round(new Enemy[] {new BasicEnemy()}, 10)
 			}, TileLibrary.GRASS.getValue(), 20, 1200);
 		}

@@ -1,5 +1,6 @@
 package game.entities.towers;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 
 import game.entities.Entity;
@@ -26,6 +27,7 @@ public class Tower extends Entity {
 	protected boolean marked;
 	protected boolean placed = false;
 	protected boolean held = false;
+	private boolean toExpensive;
 	
 	public Tower(int[] damage, int[] cost, int[] speed, String[] lore){
 		super(0, 0);
@@ -71,8 +73,17 @@ public class Tower extends Entity {
 				yOffset = Tile.TILESIZE*2 + 35;
 				xOffset = 6;
 			}
+			if (toExpensive) {
+				g2.setColor(Color.RED);
+			}else {
+				g2.setColor(Color.WHITE);
+			}
 			HUD.drawCenteredText(g2, text, (int) getX() + xOffset, (int) getY() - 6 + yOffset, 2);
 		}
+	}
+	
+	public void isToExpensive(int gold) {
+		toExpensive = getCost() > gold;
 	}
 	
 	public void lvlUp(){
@@ -116,6 +127,10 @@ public class Tower extends Entity {
 
 	public String[] getLore() {
 		return lore;
+	}
+	
+	public int getGold() {
+		return 0;
 	}
 	
 	public Point2D getCenter() {

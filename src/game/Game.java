@@ -21,8 +21,8 @@ public class Game{
 	
 	public static int tps = config.getInt("graphics.tps");
 	
-    public final double ONE_SECOND = 1000000000.;
-    private int outputRate = 5;
+    public static final double ONE_SECOND = 1000000000.;
+    private int outputRate = 20;
 	private Window window;
 	private InputHandler handler = new InputHandler();
 	

@@ -6,9 +6,8 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import game.Game;
-
-import javax.swing.text.Highlighter.Highlight;
-
+import game.entities.enemies.Enemy;
+import game.entities.tiles.BuyableTile;
 import game.entities.tiles.Tile;
 import game.entities.towers.Tower;
 import game.level.Map;
@@ -28,16 +27,18 @@ public class levelPlayer extends GameState {
 	private ImageTileSet tileset;
 	private Round[] rounds;
 	private static final int sleepTime = 20;
-	private static final int roundPauseTime = 10*60;
-	private int currentRound, time = 0;
+	private static final int roundPauseTime = 3*60, startUpPauseTime = 3*60;
+	private int currentRoundIndex, time = 0;
 	private EnemyHandler enemyHandler = new EnemyHandler();
 	private TowerHandler towerHandler;
 	private TileHighlighter highlighter;
 	private Tile backgroundTile;
 	private int gold, lifes;
+	private boolean startup = true;
 	
 	private ArrayList<Tower> towers = new ArrayList<Tower>();
-	private boolean finished = false, victory = false, lose = true;
+	private boolean finished = false, victory = false, lose = false, collectedGold = true;
+	private Round currentRound;
 
 	public levelPlayer(StateManager sm, Round[] rounds, Tile backgroundTile, int lifes, int gold) {
 		this.backgroundTile = backgroundTile;
@@ -55,44 +56,7 @@ public class levelPlayer extends GameState {
 		towerHandler = new TowerHandler(map, enemyHandler);
 		highlighter = new TileHighlighter(map, towerHandler);
 		tileset = TileSetManager.getTileset(0);
-		this.currentRound = 0;
-		
-		//temperary to test towers
-		/*int[] cost = new int[3];
-		int[] speed = new int[3];
-		int[] damage = new int[3];
-		String[] lore = new String[3];
-		for(int i = 0; i < 3; i++){
-			damage[i] = Game.config.getInt("basic_tower" + i + ".damage");
-			cost[i] = Game.config.getInt("basic_tower" + i + ".cost");
-			speed[i] = Game.config.getInt("basic_tower" + i + ".speed");
-			lore[i] = Game.config.getString("basic_tower" + i + ".lore");
-		}
-		towers.add(new BasicTower(cost, speed, damage, lore, 5*32, 6*32));
-		towers.add(new BasicTower(cost, speed, damage, lore, 7*32, 6*32));
-		towers.add(new BasicTower(cost, speed, damage, lore, 9*32, 6*32));
-		
-		towers.get(1).lvlUp();
-		towers.get(2).lvlUp();
-		towers.get(2).lvlUp();
-		
-		cost = new int[3];
-		speed = new int[3];
-		damage = new int[3];
-		lore = new String[3];
-		for(int i = 0; i < 3; i++){
-			damage[i] = Game.config.getInt("home_tower" + i + ".damage");
-			cost[i] = Game.config.getInt("home_tower" + i + ".cost");
-			speed[i] = Game.config.getInt("home_tower" + i + ".speed");
-			lore[i] = Game.config.getString("home_tower" + i + ".lore");
-		}
-		towers.add(new HomeTower(cost, speed, damage, lore, 5*32, 8*32));
-		towers.add(new HomeTower(cost, speed, damage, lore, 7*32, 8*32));
-		towers.add(new HomeTower(cost, speed, damage, lore, 9*32, 8*32));
-			
-		towers.get(4).lvlUp();
-		towers.get(5).lvlUp();
-		towers.get(5).lvlUp();*/
+		this.currentRoundIndex = 0;
 	}
 
 	@Override
@@ -103,14 +67,17 @@ public class levelPlayer extends GameState {
 		highlighter.tick();
 		
 		int lostLifes = enemyHandler.getLifesLost();
-		if (lostLifes > 0) {
-			lifes -= lostLifes;
-			if (lifes < 0) {
-				lifes = 0;
-				setLose();
-			}
-			HUD.displayResources(gold, lifes);
+		lifes -= lostLifes;
+		if (lifes < 0) {
+			lifes = 0;
+			setLose();
 		}
+		
+		int goldGained = enemyHandler.getGoldgained();
+		
+		gold += goldGained;
+		
+		HUD.displayResources(gold, lifes);
 		
 		if (!finished) {
 			manageRounds();
@@ -119,18 +86,34 @@ public class levelPlayer extends GameState {
 	}
 	
 	private void manageRounds() {
-		Round currentRound = rounds[this.currentRound];
+		if (victory) {
+			return;
+		}
+		if (startup) {
+			if (time > startUpPauseTime) {
+				time = 0;
+				startup = false;
+			}else {
+				time++;
+				return;
+			}
+		}
+		Round currentRound = rounds[this.currentRoundIndex];
 		if (currentRound.reachedEnd()) {
 			if (enemyHandler.isEmpty()) {
+				if (!collectedGold) {
+					gold += towerHandler.getEarnedGold();
+					HUD.displayResources(gold, lifes);
+					collectedGold = true;
+				}
 				time++;
 			}
 			if (time > roundPauseTime) {
+				collectedGold = false;
 				time = sleepTime + 1;
-				this.currentRound++;
-				if (this.currentRound >= rounds.length) {
-					setVictory();
-				}else{
-					currentRound = rounds[this.currentRound];					
+				this.currentRoundIndex++;
+				if (this.currentRoundIndex < rounds.length) {
+					currentRound = rounds[this.currentRoundIndex];					
 				}
 			}
 		}else {
@@ -139,14 +122,21 @@ public class levelPlayer extends GameState {
 		
 		if (!currentRound.reachedEnd() && time > sleepTime) {
 			time = 0;
-			enemyHandler.addEnemyWave(currentRound.getWave(map));
+			Enemy[] newEnemies = currentRound.getWave(map);
+			for (Enemy e: newEnemies) {
+				e.setRoundScaling(currentRoundIndex);
+			}
+			enemyHandler.addEnemyWave(newEnemies);
+		}
+		if (this.currentRoundIndex >= rounds.length - 1 && enemyHandler.isEmpty() ) {
+			setVictory();
 		}
 	}
 	
 	private void setVictory() {
 		finished = true;
-		//TODO add victory screen
 		victory = true;
+		HUD.setEndScreen(true);
 		//close();
 	}
 	
@@ -164,25 +154,45 @@ public class levelPlayer extends GameState {
 	@Override
 	public void render(Graphics2D g2) {
 		//render map
-		//g2.drawImage(map.getTexture(map.getTile(x, y), 0).getImage(),
 		map.render(g2);
+		
 		for(Tower tower : towers){
 			tower.render(g2);
 		}
 		
 		//render enemies from Round Object
 		enemyHandler.render(g2);		
-		highlighter.render(g2);
+		highlighter.render(g2);		
 		
-		HUD.render(g2);
-		HUD.drawCenteredText(g2, currentRound+1 + "", 555, 785, 32);
-		HUD.drawCenteredText(g2, rounds.length + "", 665, 785, 32);
+		HUD.drawSideMenu(g2);
 		
 		towerHandler.render(g2);
+		
+		HUD.drawEndScreen(g2);
+		g2.setColor(Color.WHITE);
+		HUD.drawCenteredText(g2, currentRoundIndex + 1 + "", 555, 785, 32);
+		HUD.drawCenteredText(g2, rounds.length + "", 665, 785, 32);;
+		
+		if (!victory) {
+			g2.setColor(Color.BLACK);
+			Round currentRound = rounds[this.currentRoundIndex];
+			String cornerMessage = ""; 
+			if (startup) {
+				cornerMessage = "Starting in " + ((startUpPauseTime - time)/Game.tps + 1) + " s";
+				g2.drawString(cornerMessage, 0, 30);			
+			}
+			if (currentRound.reachedEnd() && enemyHandler.isEmpty()) {
+				cornerMessage = "Next round " + ((roundPauseTime - time)/Game.tps + 1) + " s";
+				g2.drawString(cornerMessage, 0, 30);			
+			}
+		}
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		if (finished) {
+			HUD.endButton.mousePressed(e);
+		}
 		switch (highlighter.getMode()) {
 		case TileHighlighter.SELECT:
 			if (e.getX() > 960) {
@@ -211,6 +221,7 @@ public class levelPlayer extends GameState {
 			}
 			break;
 		}
+		towerHandler.isToExpensive(gold);
 	}
 	
 	private void buyTower() {
@@ -271,11 +282,7 @@ public class levelPlayer extends GameState {
 			highlighter.moveToTile((int) tileOrigin.getX(), (int) tileOrigin.getY());
 			highlighter.getMarkedTile().setMarked(true);
 			highlighter.setDimension(t.getWidth(), t.getHeight());
-			if (t.getPrice() > gold) {
-				HUD.setTextColor(Color.RED);
-			}else {
-				HUD.setTextColor(Color.WHITE);
-			}
+			((BuyableTile) t).toExpensive (t.getPrice() > gold);
 		}else if((tower = towerHandler.getTower(e.getX() / Tile.TILESIZE, e.getY() / Tile.TILESIZE)) != null){
 			highlighter.moveTo((int)(tower.getX()), (int)(tower.getY()));
 			highlighter.setDimension(tower.getWidth(), tower.getHeight());

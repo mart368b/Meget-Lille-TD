@@ -11,7 +11,7 @@ import game.math.Point2D;
 public class EnemyHandler {
 	
 	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
-	private int lifesLost = 0;
+	private int lifesLost = 0, goldGained = 0;
 	
 	public EnemyHandler() {}
 
@@ -32,6 +32,7 @@ public class EnemyHandler {
 				continue;
 			}
 			if (e.isDead()) {
+				goldGained += e.getGold();
 				enemies.remove(i);
 				i--;
 			}else {
@@ -60,6 +61,12 @@ public class EnemyHandler {
 		int l = lifesLost;
 		lifesLost = 0;
 		return l;
+	}
+	
+	public int getGoldgained() {
+		int g = goldGained;
+		goldGained = 0;
+		return g;
 	}
 
 	public ArrayList<Enemy> getEnemiesWithinCircle(Point2D point2d, double range) {

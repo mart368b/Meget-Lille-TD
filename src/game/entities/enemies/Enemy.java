@@ -17,6 +17,7 @@ public class Enemy extends AnimatedEntity {
 	private int health, maxHealth, speed;
 	private Sprite sprite;
 	private WalkingPath path;
+	private int gold;
 	
 	protected boolean alive = true, end = false;
 	protected double progress = 0;
@@ -24,24 +25,26 @@ public class Enemy extends AnimatedEntity {
 	/**
 	 * Create a stationary Enemy
 	 */
-	public Enemy(Sprite sprite, double x, double y, int animationSpeed, int health, int speed) {
+	public Enemy(Sprite sprite, double x, double y, int animationSpeed, int health, int speed, int gold) {
 		super(x, y, sprite, animationSpeed);
 		this.health = health;
 		this.maxHealth = health;
 		this.speed = speed;
 		this.sprite = sprite; 
+		this.gold = gold;
 	}
 	
 	/**
 	 * Create a Enemy that moves along the path
 	 */
-	public Enemy(Sprite sprite, WalkingPath path, int animationSpeed, int health, int speed) {
+	public Enemy(Sprite sprite, WalkingPath path, int animationSpeed, int health, int speed, int gold) {
 		super(path.getStartingX(), path.getStartingY(), sprite, animationSpeed);
 		this.health = health;
 		this.maxHealth = health;
 		this.speed = speed;
 		this.path = path;
 		this.sprite = sprite;
+		this.gold = gold;
 	}
 	
 	/**
@@ -97,6 +100,11 @@ public class Enemy extends AnimatedEntity {
 		return !alive;
 	}
 	
+	public void setRoundScaling(int round) {
+		maxHealth *= 1 + (round + 0.)/10;
+		health = maxHealth;
+	}
+	
 	public void kill() {
 		alive = false;
 	}
@@ -114,14 +122,18 @@ public class Enemy extends AnimatedEntity {
 	}
 	
 	public Enemy clone() {
-		return new Enemy(sprite, path, animation.getAnimationSpeed(), health, speed);
+		return new Enemy(sprite, path, animation.getAnimationSpeed(), health, speed, gold);
 	}
 	
 	public Enemy clone(WalkingPath path) {
-		return new Enemy(sprite, path, animation.getAnimationSpeed(), health, speed);
+		return new Enemy(sprite, path, animation.getAnimationSpeed(), health, speed, gold);
 	}
 	
 	public double getProgress() {
 		return progress;
+	}
+	
+	public int getGold() {
+		return gold;
 	}
 }

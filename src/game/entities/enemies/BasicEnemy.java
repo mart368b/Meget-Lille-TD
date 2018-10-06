@@ -14,7 +14,8 @@ public class BasicEnemy extends Enemy{
 				0,	0, 
 				Game.config.getInt("classic.animationspeed"), 
 				Game.config.getInt("classic.health"), 
-				Game.config.getInt("classic.speed")
+				Game.config.getInt("classic.speed"),
+				Game.config.getInt("classic.gold")
 				);
 	}
 	
@@ -24,7 +25,8 @@ public class BasicEnemy extends Enemy{
 				x,	y, 
 				Game.config.getInt("classic.animationspeed"), 
 				Game.config.getInt("classic.health"), 
-				Game.config.getInt("classic.speed")
+				Game.config.getInt("classic.speed"),
+				Game.config.getInt("classic.gold")
 				);
 	}
 	
@@ -34,7 +36,8 @@ public class BasicEnemy extends Enemy{
 				p0.getX(),	p0.getY(), 
 				Game.config.getInt("classic.animationspeed"), 
 				Game.config.getInt("classic.health"), 
-				Game.config.getInt("classic.speed")
+				Game.config.getInt("classic.speed"),
+				Game.config.getInt("classic.gold")
 				);
 	}
 	
@@ -44,7 +47,8 @@ public class BasicEnemy extends Enemy{
 				path, 
 				Game.config.getInt("classic.animationspeed"), 
 				Game.config.getInt("classic.health"), 
-				Game.config.getInt("classic.speed")
+				Game.config.getInt("classic.speed"),
+				Game.config.getInt("classic.gold")
 				);
 	}
 }

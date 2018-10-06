@@ -5,19 +5,19 @@ package game.entities.towers;
 public enum TowerLibary {
 	HOME(new HomeTower(new int[] {
 			//damage
-			20,
-			30,
-			45
+			50,
+			75,
+			125
 	}, new int[] {
 			//cost
 			200,
-			100,
-			150
+			300,
+			500
 	}, new int[] {
 			//speed
 			1,
-			2,
-			3
+			1,
+			1
 	}, new String[] {
 			//lore
 			"so farmers do fight",
@@ -26,19 +26,19 @@ public enum TowerLibary {
 	}, 997, 289)),
 	BASIC(new BasicTower(new int[] {
 			//damage
-			5,
-			10,
-			25
+			25,
+			32,
+			45
 	}, new int[] {
 			//cost
-			100,
-			50,
-			100
+			200,
+			250,
+			300
 	}, new int[] {
 			//speed
-			10,
-			20,
-			25
+			2,
+			3,
+			3
 	}, new String[] {
 			//lore
 			"so basic",

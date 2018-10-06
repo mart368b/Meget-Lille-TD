@@ -13,7 +13,8 @@ public class BasicTower extends Tower {
 	
 	private double range = 200;
 	private Enemy target;
-	private int shootCooldown = 0;
+	private double shootCooldown = 0;
+	private long stopShotTime;
 
 	public BasicTower(int[] damage, int[] cost, int[] speed, String[] lore, int x, int y) {
 		super(damage, cost, speed, lore, x, y, 20, 0);
@@ -30,6 +31,9 @@ public class BasicTower extends Tower {
 	@Override
 	public void tick(EnemyHandler enemyHandler) {
 		super.tick(enemyHandler);
+		if (target != null && (target.getCenter().distance(getCenter()) > range || target.isDead())) {
+			target = null;
+		}
 		if (target == null) {
 			ArrayList<Enemy> enemies = enemyHandler.getEnemiesWithinCircle( getCenter(), range);
 			if (enemies.size() == 0) {
@@ -48,12 +52,13 @@ public class BasicTower extends Tower {
 		
 		if (shootCooldown >= 60) {
 			shootCooldown -= 60;
+			stopShotTime = System.currentTimeMillis() + 50;
 			target.hit(getDamage());
 			if (target.isDead()) {
 				target = null;
 			}
 		}
-		shootCooldown += getSpeed();
+		shootCooldown += getSpeed()/2.;
 		
 	}
 	
@@ -63,7 +68,7 @@ public class BasicTower extends Tower {
 		if (marked && placed || held) {
 			g2.draw(new Ellipse2D.Double(cp.getX() - range, cp.getY() - range, range*2, range*2));
 		}
-		if (target != null) {
+		if (target != null && stopShotTime > System.currentTimeMillis()) {
 			Point2D ecp = target.getCenter();
 			g2.drawLine((int)cp.getX(),(int)cp.getY(),(int) ecp.getX(),(int) ecp.getY());
 		}

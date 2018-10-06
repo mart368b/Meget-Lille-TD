@@ -23,6 +23,11 @@ public class HomeTower extends Tower {
 		
 	}
 	
+	@Override
+	public int getGold() {
+		return getDamage();
+	}
+	
 	public void render(Graphics2D g2){
 		super.render(g2);
 	}

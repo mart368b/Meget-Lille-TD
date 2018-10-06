@@ -73,6 +73,20 @@ public class TowerHandler {
 		return heldTower;
 	}
 	
+	public int getEarnedGold() {
+		int goldEarned = 0;
+		for (Tower t: towers) {
+			goldEarned += t.getGold();
+		}
+		return goldEarned;
+	}
+	
+	public void isToExpensive(int gold) {
+		for (Tower t: previewTowers) {
+			t.isToExpensive(gold);
+		}
+	}
+	
 	public Tower getTower(int x, int y) {
 		return map[x + y * width];
 	}

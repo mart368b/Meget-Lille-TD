@@ -6,6 +6,7 @@ classic:
 	health: 50
 	speed: 2
 	animationspeed: 10
+	gold: 25
 basic_tower0:
 	damage: 25
 	speed: 10
