@@ -85,6 +85,9 @@ public class TowerHandler {
 		for (Tower t: previewTowers) {
 			t.isToExpensive(gold);
 		}
+		for (Tower t: towers) {
+			t.isToExpensive(gold);
+		}
 	}
 	
 	public Tower getTower(int x, int y) {

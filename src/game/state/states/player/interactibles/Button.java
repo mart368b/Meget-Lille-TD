@@ -13,6 +13,7 @@ public class Button {
 	private boolean pressed = false;
 	private int x, y;
 	private int width, height, padding = 10;
+	private boolean lockDimensions;
 	private String text;
 	private Color bgColor = new Color(80, 220, 100);
 	
@@ -22,6 +23,14 @@ public class Button {
 		this.text = text;
 		this.x = x;
 		this.y = y;
+	}
+	
+	public Button(int x, int y, int width, int height, String text) {
+		this.text = text;
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
 	}
 	
 	public void mousePressed(MouseEvent e) {

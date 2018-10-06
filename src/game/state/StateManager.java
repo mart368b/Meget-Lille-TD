@@ -19,7 +19,7 @@ public class StateManager implements BasicMouseInput {
 	
 	public StateManager(){
 		gamestates = new GameState[StateTypes.getCount()];
-		currentstate = StateTypes.LEVEL1_0; //normally MENU, but changed for testing;
+		currentstate = StateTypes.MENU; //normally MENU, but changed for testing;
 		loadstate(currentstate);
 	}
 	
@@ -28,12 +28,8 @@ public class StateManager implements BasicMouseInput {
 			gamestates[state.getValue()] = new menu_state(this);
 		}else if(state == StateTypes.LEVEL1_0){
 			gamestates[state.getValue()] = new levelPlayer(this, new Round[] {
-					new Round(new Enemy[] {new BasicEnemy()}, 10),
-					new Round(new Enemy[] {new BasicEnemy()}, 10),
-					new Round(new Enemy[] {new BasicEnemy()}, 10),
-					new Round(new Enemy[] {new BasicEnemy()}, 10),
-					new Round(new Enemy[] {new BasicEnemy()}, 10),
-					new Round(new Enemy[] {new BasicEnemy()}, 10)
+					new Round(new Enemy[] {new BasicEnemy()}, 3),
+					new Round(new Enemy[] {new BasicEnemy()}, 3)
 			}, TileLibrary.GRASS.getValue(), 20, 1200);
 		}
 		//New states will get added here
@@ -66,16 +62,25 @@ public class StateManager implements BasicMouseInput {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		gamestates[currentstate.getValue()].mousePressed(e);;
+		GameState g = gamestates[currentstate.getValue()];
+		if (g != null) {
+			g.mousePressed(e);;
+		}
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		gamestates[currentstate.getValue()].mouseMoved(e);
+		GameState g = gamestates[currentstate.getValue()];
+		if (g != null) {
+			g.mouseMoved(e);;
+		}
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		gamestates[currentstate.getValue()].mouseExited(e);;
+		GameState g = gamestates[currentstate.getValue()];
+		if (g != null) {
+			g.mouseExited(e);
+		}
 	}
 }

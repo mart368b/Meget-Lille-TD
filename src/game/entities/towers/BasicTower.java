@@ -1,5 +1,6 @@
 package game.entities.towers;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
@@ -64,6 +65,7 @@ public class BasicTower extends Tower {
 	
 	public void render(Graphics2D g2){
 		super.render(g2);
+		g2.setColor(Color.WHITE);
 		Point2D cp = getCenter();
 		if (marked && placed || held) {
 			g2.draw(new Ellipse2D.Double(cp.getX() - range, cp.getY() - range, range*2, range*2));

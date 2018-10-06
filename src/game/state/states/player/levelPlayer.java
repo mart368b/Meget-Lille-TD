@@ -61,7 +61,6 @@ public class levelPlayer extends GameState {
 
 	@Override
 	public void tick() {
-		
 		enemyHandler.tick();
 		towerHandler.tick();
 		highlighter.tick();
@@ -76,11 +75,15 @@ public class levelPlayer extends GameState {
 		int goldGained = enemyHandler.getGoldgained();
 		
 		gold += goldGained;
-		
+		towerHandler.isToExpensive(gold);
 		HUD.displayResources(gold, lifes);
 		
 		if (!finished) {
 			manageRounds();
+		}else {
+			if (HUD.endButton.hasBeenPressed()) {
+				close();
+			}
 		}
 			
 	}
@@ -103,6 +106,7 @@ public class levelPlayer extends GameState {
 			if (enemyHandler.isEmpty()) {
 				if (!collectedGold) {
 					gold += towerHandler.getEarnedGold();
+					towerHandler.isToExpensive(gold);
 					HUD.displayResources(gold, lifes);
 					collectedGold = true;
 				}
@@ -201,6 +205,7 @@ public class levelPlayer extends GameState {
 				Tower tower = towerHandler.getTower(e.getX() / Tile.TILESIZE, e.getY() / Tile.TILESIZE);
 				if (tower != null && tower.getCost() != -1 && gold >= tower.getCost()) {
 					gold -= tower.getCost();
+					towerHandler.isToExpensive(gold);
 					HUD.displayResources(gold, lifes);
 					tower.lvlUp();
 				}else {
@@ -216,12 +221,12 @@ public class levelPlayer extends GameState {
 			}
 			if (!highlighter.isOccupied() && gold >= towerHandler.getHeldTower().getCost()) {
 				gold -= towerHandler.getHeldTower().getCost();
+				towerHandler.isToExpensive(gold);
 				HUD.displayResources(gold, lifes);
 				buyTower();
 			}
 			break;
 		}
-		towerHandler.isToExpensive(gold);
 	}
 	
 	private void buyTower() {
@@ -234,6 +239,7 @@ public class levelPlayer extends GameState {
 			Tile markedTile = highlighter.getMarkedTile();
 			if (markedTile.isBuyable() && markedTile.getPrice() <= gold) {
 				gold -= markedTile.getPrice();
+				towerHandler.isToExpensive(gold);
 				HUD.displayResources(gold, lifes);
 				markedTile.buy(backgroundTile, map);
 				highlighter.setVisible(false);
@@ -283,6 +289,7 @@ public class levelPlayer extends GameState {
 			highlighter.getMarkedTile().setMarked(true);
 			highlighter.setDimension(t.getWidth(), t.getHeight());
 			((BuyableTile) t).toExpensive (t.getPrice() > gold);
+			towerHandler.isToExpensive(gold);
 		}else if((tower = towerHandler.getTower(e.getX() / Tile.TILESIZE, e.getY() / Tile.TILESIZE)) != null){
 			highlighter.moveTo((int)(tower.getX()), (int)(tower.getY()));
 			highlighter.setDimension(tower.getWidth(), tower.getHeight());
