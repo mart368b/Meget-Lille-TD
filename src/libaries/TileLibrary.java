@@ -1,4 +1,10 @@
-package game.entities.tiles;
+package libaries;
+
+import game.entities.tiles.BuyableTile;
+import game.entities.tiles.ImageIndex;
+import game.entities.tiles.LargeBuyableTile;
+import game.entities.tiles.Obstical;
+import game.entities.tiles.Tile;
 
 public enum TileLibrary {
 	// obsticals

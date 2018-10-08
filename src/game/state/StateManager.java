@@ -5,11 +5,12 @@ import java.awt.event.MouseEvent;
 
 import game.entities.enemies.BasicEnemy;
 import game.entities.enemies.Enemy;
-import game.entities.tiles.TileLibrary;
 import game.state.states.menu_state;
 import game.state.states.input.BasicMouseInput;
 import game.state.states.player.Round;
 import game.state.states.player.levelPlayer;
+import libaries.EnemyLibary;
+import libaries.TileLibrary;
 
 
 public class StateManager implements BasicMouseInput {
@@ -28,8 +29,8 @@ public class StateManager implements BasicMouseInput {
 			gamestates[state.getValue()] = new menu_state(this);
 		}else if(state == StateTypes.LEVEL1_0){
 			gamestates[state.getValue()] = new levelPlayer(this, new Round[] {
-					new Round(new Enemy[] {new BasicEnemy()}, 3),
-					new Round(new Enemy[] {new BasicEnemy()}, 3)
+					new Round(new Enemy[] {EnemyLibary.SHEEP.getValue()}, 3),
+					new Round(new Enemy[] {EnemyLibary.SHEEP.getValue()}, 3)
 			}, TileLibrary.GRASS.getValue(), 20, 1200);
 		}
 		//New states will get added here

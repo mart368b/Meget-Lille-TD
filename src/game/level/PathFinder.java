@@ -3,8 +3,8 @@ package game.level;
 import java.util.ArrayList;
 
 import game.entities.tiles.Tile;
-import game.entities.tiles.TileLibrary;
 import game.math.Point2D;
+import libaries.TileLibrary;
 
 public class PathFinder {
 	

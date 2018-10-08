@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import game.entities.tiles.Tile;
-import game.entities.tiles.TileLibrary;
+import libaries.TileLibrary;
 
 public class Map {	
 	

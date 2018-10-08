@@ -6,7 +6,7 @@ import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 
 import game.entities.enemies.Enemy;
-import game.entities.tiles.Tile;
+import game.entities.projectile.Projectile;
 import game.math.Point2D;
 import game.state.states.EnemyHandler;
 
@@ -16,6 +16,7 @@ public class BasicTower extends Tower {
 	private Enemy target;
 	private double shootCooldown = 0;
 	private long stopShotTime;
+	private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 
 	public BasicTower(int[] damage, int[] cost, int[] speed, String[] lore, int x, int y) {
 		super(damage, cost, speed, lore, x, y, 20, 0);
@@ -32,6 +33,9 @@ public class BasicTower extends Tower {
 	@Override
 	public void tick(EnemyHandler enemyHandler) {
 		super.tick(enemyHandler);
+		for (Projectile proj: projectiles) {
+			proj.tick();
+		}
 		if (target != null && (target.getCenter().distance(getCenter()) > range || target.isDead())) {
 			target = null;
 		}

@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 
 import game.entities.tiles.Tile;
-import game.entities.tiles.TileLibrary;
+import libaries.TileLibrary;
 
 public class MapReader {
 	
