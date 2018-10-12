@@ -123,6 +123,23 @@ public class Point2D{
 	}
 	
 	/**
+	 * get a point between two points
+	 * @param p1 starting point
+	 * @param p2 end point
+	 * @param progress progress between 0-1
+	 * @return point defined by progress
+	 */
+	public static Point2D lerp(Point2D p1, Point2D p2, double progress) {
+		if (progress <= 0) {
+			return p1;
+		}
+		if (progress >= 1) {
+			return p2;
+		}
+		return new Point2D(p1.getX()*progress + p2.getX()*(1-progress), p1.getY()*progress + p2.getY()*(1-progress));
+	}
+	
+	/**
 	 * Calculate the distance from a line described by the points p0 and p1
 	 */
 	public double distanceFromLine(Point2D p0, Point2D p1) {

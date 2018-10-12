@@ -3,8 +3,9 @@ package game.state.states.player;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
+import game.entities.enemies.Enemy;
+import game.entities.projectile.Projectile;
 import game.entities.tiles.Tile;
-import game.entities.towers.HomeTower;
 import game.entities.towers.Tower;
 import game.entities.towers.TowerLibary;
 import game.level.Map;
@@ -20,6 +21,7 @@ public class TowerHandler {
 	private Tower[] map;
 	private int width;
 	private ArrayList<Tower> towers = new ArrayList<Tower>();
+	private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 	private Tower heldTower, markedTower;
 	private EnemyHandler enemyHandler;
 	
@@ -30,7 +32,7 @@ public class TowerHandler {
 	}
 	
 	public void placeTower(int x, int y) {
-		Tower t = heldTower.clone(x, y);
+		Tower t = heldTower.clone(x, y, this);
 		int tx = x / Tile.TILESIZE;
 		int ty = y / Tile.TILESIZE;
 		map[tx + ty * width] = t;
@@ -101,6 +103,9 @@ public class TowerHandler {
 		for (Tower t: towers) {
 			t.render(g2);
 		}
+		for (Projectile p: projectiles) {
+			p.render(g2);
+		}
 	}
 	
 	public void moveHeldTower(int x, int y) {
@@ -131,9 +136,25 @@ public class TowerHandler {
 		}
 	}
 	
+	public void addProjectile(Projectile p) {
+		projectiles.add(p);
+	}
+	
 	public void tick() {
 		for(Tower t: towers) {
 			t.tick(enemyHandler);
+		}
+		for (int i = 0; i < projectiles.size(); i++) {
+			Projectile p = projectiles.get(i);
+			if (!p.isActive()) {
+				continue;
+			}
+			if (p.isDead()) {
+				projectiles.remove(i);
+				i--;
+			}else {
+				p.tick(enemyHandler);
+			}
 		}
 	}
 }

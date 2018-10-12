@@ -152,6 +152,7 @@ public class levelPlayer extends GameState {
 	}
 	
 	public void close() {
+		HUD.setEndScreenVisible(false);
 		sm.setState(StateTypes.MENU);
 	}
 

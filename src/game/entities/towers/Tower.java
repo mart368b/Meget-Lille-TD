@@ -7,6 +7,7 @@ import game.entities.Entity;
 import game.entities.tiles.Tile;
 import game.math.Point2D;
 import game.state.states.EnemyHandler;
+import game.state.states.player.TowerHandler;
 import gfx.HUD;
 import gfx.sprites.SpriteManager;
 
@@ -59,7 +60,7 @@ public class Tower extends Entity {
 		this.placed = placed;
 	}
 	
-	public Tower clone(double x, double y) {
+	public Tower clone(double x, double y, TowerHandler th) {
 		return new Tower(damage, cost, speed, lore, x, y, spriteNR, line, true);
 	}
 	

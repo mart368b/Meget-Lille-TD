@@ -6,9 +6,13 @@ import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 
 import game.entities.enemies.Enemy;
+import game.entities.projectile.FlyingProjectile;
 import game.entities.projectile.Projectile;
 import game.math.Point2D;
 import game.state.states.EnemyHandler;
+import game.state.states.player.TowerHandler;
+import gfx.particles.ParticleSystem;
+import gfx.particles.SimpleParticleSystem;
 
 public class BasicTower extends Tower {
 	
@@ -16,25 +20,30 @@ public class BasicTower extends Tower {
 	private Enemy target;
 	private double shootCooldown = 0;
 	private long stopShotTime;
-	private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
+	private TowerHandler th;
+	private ParticleSystem particleSystem;
 
 	public BasicTower(int[] damage, int[] cost, int[] speed, String[] lore, int x, int y) {
 		super(damage, cost, speed, lore, x, y, 20, 0);
 	}
 	
-	public BasicTower(int[] damage, int[] cost, int[] speed, String[] lore, int x, int y, boolean placed) {
+	public BasicTower(int[] damage, int[] cost, int[] speed, String[] lore, int x, int y, boolean placed, TowerHandler th) {
 		super(damage, cost, speed, lore, x, y, 20, 0, placed);
+		this.th = th;
+		if (placed) {
+			particleSystem = new SimpleParticleSystem(getX(), getY());			
+		}
 	}
 	
-	public BasicTower clone(double x, double y) {
-		return new BasicTower(damage, cost, speed, lore,(int) x,(int) y, true);
+	public BasicTower clone(double x, double y, TowerHandler th) {
+		return new BasicTower(damage, cost, speed, lore,(int) x,(int) y, true, th);
 	}
 	
 	@Override
 	public void tick(EnemyHandler enemyHandler) {
 		super.tick(enemyHandler);
-		for (Projectile proj: projectiles) {
-			proj.tick();
+		if (placed) {
+			particleSystem.tick();
 		}
 		if (target != null && (target.getCenter().distance(getCenter()) > range || target.isDead())) {
 			target = null;
@@ -57,11 +66,8 @@ public class BasicTower extends Tower {
 		
 		if (shootCooldown >= 60) {
 			shootCooldown -= 60;
-			stopShotTime = System.currentTimeMillis() + 50;
-			target.hit(getDamage());
-			if (target.isDead()) {
-				target = null;
-			}
+			particleSystem.play();
+			th.addProjectile(new FlyingProjectile(getCenter(), target, 6, range, getDamage()));
 		}
 		shootCooldown += getSpeed()/2.;
 		
@@ -74,9 +80,8 @@ public class BasicTower extends Tower {
 		if (marked && placed || held) {
 			g2.draw(new Ellipse2D.Double(cp.getX() - range, cp.getY() - range, range*2, range*2));
 		}
-		if (target != null && stopShotTime > System.currentTimeMillis()) {
-			Point2D ecp = target.getCenter();
-			g2.drawLine((int)cp.getX(),(int)cp.getY(),(int) ecp.getX(),(int) ecp.getY());
+		if (placed) {
+			particleSystem.render(g2);
 		}
 	}
 }

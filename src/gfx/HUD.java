@@ -35,7 +35,7 @@ public class HUD {
 	
 	public static void setEndScreen(boolean b) {
 		endScreen.setWinOrLose(b);
-		setEndScreenVisible(true);
+		setEndScreenVisible(b);
 	}
 	
 	public static void setEndScreenVisible(boolean b) {

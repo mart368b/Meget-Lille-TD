@@ -14,6 +14,7 @@ public class menu_state extends GameState {
 	
 	private StateTypes[] levels = new StateTypes[] {
 		StateTypes.LEVEL1_0
+		
 	};
 	
 	private ArrayList<Button> buttons = new ArrayList<Button>();

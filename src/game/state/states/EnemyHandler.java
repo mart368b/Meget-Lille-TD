@@ -78,4 +78,13 @@ public class EnemyHandler {
 		}
 		return enemiesWithinRange;
 	}
+	
+	public Enemy getEnemyWithinCircle(Point2D point2d, double range) {
+		for (Enemy e: enemies) {
+			if (e.getCenter().distance(point2d) < range) {
+				return e;
+			}
+		}
+		return null;
+	}
 }
