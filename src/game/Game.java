@@ -36,7 +36,7 @@ public class Game{
 		sm = new StateManager();
 		handler.setTarget(sm);
 		
-		new SplashScreenDriver();
+		//new SplashScreenDriver();
 		initDisplay();
 		run();
 	}

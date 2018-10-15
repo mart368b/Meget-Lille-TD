@@ -24,10 +24,9 @@ import gfx.tiles.TileSetManager;
 public class levelPlayer extends GameState {
 	
 	private Map map;
-	private ImageTileSet tileset;
 	private Round[] rounds;
 	private static final int sleepTime = 20;
-	private static final int roundPauseTime = 3*60, startUpPauseTime = 3*60;
+	private static final int roundPauseTime = 2*60, startUpPauseTime = 4*60;
 	private int currentRoundIndex, time = 0;
 	private EnemyHandler enemyHandler = new EnemyHandler();
 	private TowerHandler towerHandler;
@@ -55,7 +54,6 @@ public class levelPlayer extends GameState {
 		map = new Map("level1_0");
 		towerHandler = new TowerHandler(map, enemyHandler);
 		highlighter = new TileHighlighter(map, towerHandler);
-		tileset = TileSetManager.getTileset(0);
 		this.currentRoundIndex = 0;
 	}
 

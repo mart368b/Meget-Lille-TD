@@ -1,57 +1,45 @@
 package gfx.particles;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 
-import game.math.Point2D;
-import game.math.Vector2D;
+public class Particle {
+	
+	public int t, color;
+	public double vx, vy;
+	
+	public Particle(double vx, double vy, int t0, int color) {
+		this.t = t0;
+		this.vx = vx;
+		this.vy = vy;
+		this.color = color;
+	}
+	
+	public Particle( int t, double vx, double vy, int color) {
+		this.t = t;
+		this.vx = vx;
+		this.vy = vy;
+		this.color = color;
+	}
+	
+	public boolean age(int maxAge) {
+		return ++t == maxAge;
+	}
+	
+	public double getX(double gravity) {
+		return vx * t;
+	}
+	
+	public double getY(double gravity) {
+		return vy * t + gravity * Math.pow(t, 2);
+	}
 
-public class Particle extends Point2D{
-
-	public boolean alive = true;
-	public Color c, currentColor;
-	private Vector2D vec;
-	private int lifeTime, maxLifeTime;
-	private double size;
-	
-	public Particle(double x, double y, Vector2D vec, int maxLifeTime, double size, Color c) {
-		super(x, y);
-		this.vec = vec;
-		this.maxLifeTime = maxLifeTime;
-		this.size = size;
-		this.c = c;
-		currentColor = c;
-	}
-	
-	public void tick() {
-		if (!alive) {
-			return;
-		}else {
-			currentColor = getColor();
-		}
-		this.translate(vec);
-		if (lifeTime++ > maxLifeTime) {
-			kill();
-		}
-	}
-	
-	public void render(Graphics2D g2) {
-		double progress = 1 - (lifeTime + 0.)/maxLifeTime;
-		double currentSize = size * progress;
-		g2.fill(new Ellipse2D.Double(getX() - currentSize/2, getY() - currentSize/2, currentSize, currentSize));
-	}
-	
-	public Color getColor() {
-		return new Color(c.getRed(), c.getGreen(), c.getBlue(), lifeTime/maxLifeTime);
-	}
-	
-	public void kill() {
-		alive = false;
-	}
-	
-	public boolean isDead() {
-		return !alive;
+	public void render(Graphics2D g2, double xOffset, double yOffset, ParticleSystemSettings settings) {
+		double progress = (t + 0.) / settings.particleMaxLifeTimer;
+		double invProgress = 1 - progress;
+		double r = settings.particleVariationSize * invProgress + settings.initialParticleSize;
+		g2.setColor(settings.palet.colors[color]);
+		g2.fill(new Ellipse2D.Double(xOffset + getX(settings.gravity) - r, yOffset + getY(settings.gravity) - r, r*2, r*2));
 	}
 
 }

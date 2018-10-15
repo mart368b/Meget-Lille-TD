@@ -6,7 +6,17 @@ classic:
 	health: 50
 	speed: 2
 	animationspeed: 10
-	gold: 25
+	gold: 15
+slime:
+	health: 20
+	speed: 3
+	animationspeed: 15
+	gold: 10
+cube:
+	health: 100
+	speed: 1
+	animationspeed: 5
+	gold: 30
 basic_tower0:
 	damage: 25
 	speed: 10

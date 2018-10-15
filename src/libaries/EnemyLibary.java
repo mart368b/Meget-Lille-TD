@@ -6,7 +6,9 @@ import game.entities.tiles.Tile;
 
 public enum EnemyLibary {
 
-	SHEEP(new BasicEnemy());
+	SHEEP(new BasicEnemy("classic", 0)),
+	SLIMEGHOST(new BasicEnemy("slime", 1)),
+	CUBE(new BasicEnemy("cube", 2));
 	
 	
 	private final Enemy enemy;

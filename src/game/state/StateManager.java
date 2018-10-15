@@ -29,8 +29,14 @@ public class StateManager implements BasicMouseInput {
 			gamestates[state.getValue()] = new menu_state(this);
 		}else if(state == StateTypes.LEVEL1_0){
 			gamestates[state.getValue()] = new levelPlayer(this, new Round[] {
-					new Round(new Enemy[] {EnemyLibary.SHEEP.getValue()}, 3),
-					new Round(new Enemy[] {EnemyLibary.SHEEP.getValue()}, 3)
+					new Round(new Enemy[] {EnemyLibary.SHEEP.getValue()}, 10),
+					new Round(new Enemy[] {EnemyLibary.SLIMEGHOST.getValue()}, 40),
+					new Round(new Enemy[] {EnemyLibary.CUBE.getValue()}, 20),
+					new Round(new Enemy[] {EnemyLibary.SHEEP.getValue()}, 20),
+					new Round(new Enemy[] {EnemyLibary.SHEEP.getValue()}, 20),
+					new Round(new Enemy[] {EnemyLibary.SHEEP.getValue()}, 20),
+					new Round(new Enemy[] {EnemyLibary.SHEEP.getValue()}, 20),
+					new Round(new Enemy[] {EnemyLibary.SHEEP.getValue()}, 20)
 			}, TileLibrary.GRASS.getValue(), 20, 1200);
 		}
 		//New states will get added here

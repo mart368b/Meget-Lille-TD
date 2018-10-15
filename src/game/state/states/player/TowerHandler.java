@@ -7,16 +7,17 @@ import game.entities.enemies.Enemy;
 import game.entities.projectile.Projectile;
 import game.entities.tiles.Tile;
 import game.entities.towers.Tower;
-import game.entities.towers.TowerLibary;
 import game.level.Map;
 import game.state.states.EnemyHandler;
 import game.state.states.player.interactibles.TileHighlighter;
+import libaries.TowerLibary;
 
 public class TowerHandler {
 	
 	private Tower[] previewTowers = new Tower[] {
 			TowerLibary.BASIC.getValue(),
-			TowerLibary.HOME.getValue()
+			TowerLibary.HOME.getValue(),
+			TowerLibary.BUBBLE.getValue()
 	};
 	private Tower[] map;
 	private int width;

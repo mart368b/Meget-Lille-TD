@@ -19,11 +19,15 @@ public class SpriteManager {
 		String path = "/sprites/enemies/";
 		//enemies 0 - 19
 		sprites.put(0, new Sprite(path + "SheepSheet.png", 32, 32));
+		sprites.put(1, new Sprite(path + "SlimeSheet.png", 32, 32));
+		sprites.put(2, new Sprite(path + "CubeSheet.png", 32, 32));
 		
 		path = "/sprites/towers/";
 		//towers 20 - ??
 		sprites.put(20, new Sprite(path + "BasicTower.png", 64, 64));
 		sprites.put(21, new Sprite(path + "HomeTower.png", 64, 64));
+		sprites.put(22, new Sprite(path + "BubbleTower.png", 64, 64));
+		sprites.put(23, new Sprite(path + "Bomb.png", 64, 64));
 	}
 	
 	public static Sprite getSprite(int id){

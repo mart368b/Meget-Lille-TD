@@ -9,12 +9,20 @@ import game.state.GameState;
 import game.state.StateManager;
 import game.state.StateTypes;
 import game.state.states.player.interactibles.Button;
+import gfx.HUD;
+import gfx.particles.ParticleSystem;
+import gfx.particles.ParticleSystemLibary;
+import gfx.particles.ParticleSystemSettings;
 
 public class menu_state extends GameState {
 	
+	private ParticleSystem[] particleSystems = new ParticleSystem[] {
+			new ParticleSystem(200, 200, ParticleSystemLibary.SHOT.getValue(), true),
+			new ParticleSystem(250, 200, ParticleSystemLibary.FIRE.getValue(), true)
+	};
+	
 	private StateTypes[] levels = new StateTypes[] {
 		StateTypes.LEVEL1_0
-		
 	};
 	
 	private ArrayList<Button> buttons = new ArrayList<Button>();
@@ -39,6 +47,10 @@ public class menu_state extends GameState {
 				sm.setState(levels[i]);
 			}
 		}
+		
+		for (ParticleSystem p: particleSystems) {
+			p.tick();
+		}
 	}
 
 	@Override
@@ -47,6 +59,12 @@ public class menu_state extends GameState {
 		g2.fillRect(0, 0, 1280, 960);
 		for(Button b: buttons) {
 			b.render(g2);
+		}
+		g2.setColor(Color.BLACK);
+		g2.drawString("Paticle test", 150, 110);
+		g2.drawRect(150, 125, 200, 100);
+		for (ParticleSystem p: particleSystems) {
+			p.render(g2);
 		}
 	}
 
