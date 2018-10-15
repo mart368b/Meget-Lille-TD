@@ -101,7 +101,7 @@ public class Enemy extends AnimatedEntity {
 	}
 	
 	public void setRoundScaling(int round) {
-		maxHealth *= 1 + (round + 0.)/10;
+		maxHealth *= 1 + (round + 0.)/4;
 		health = maxHealth;
 	}
 	

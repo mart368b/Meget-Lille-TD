@@ -51,6 +51,11 @@ public class Round {
 		return enemies.toArray(enemyArray);
 	}
 	
+	public void reset() {
+		releasedCount = 0;
+		currentEnemy = 0;
+	}
+	
 	public boolean reachedEnd() {
 		return releasedCount >= enemyCount;
 	}

@@ -25,28 +25,29 @@ public class levelPlayer extends GameState {
 	
 	private Map map;
 	private Round[] rounds;
-	private static final int sleepTime = 20;
-	private static final int roundPauseTime = 2*60, startUpPauseTime = 4*60;
-	private int currentRoundIndex, time = 0;
+	private final int sleepTime = 20;
+	private final int roundPauseTime = 2*60, startUpPauseTime = 4*60;
+	private int currentRoundIndex, roundOffset, time = 0;
 	private EnemyHandler enemyHandler = new EnemyHandler();
 	private TowerHandler towerHandler;
 	private TileHighlighter highlighter;
 	private Tile backgroundTile;
-	private int gold, lifes;
+	private int gold, lifes, loopCount, roundCount;
 	private boolean startup = true;
 	
 	private ArrayList<Tower> towers = new ArrayList<Tower>();
 	private boolean finished = false, victory = false, lose = false, collectedGold = true;
-	private Round currentRound;
 
-	public levelPlayer(StateManager sm, Round[] rounds, Tile backgroundTile, int lifes, int gold) {
+	public levelPlayer(StateManager sm, Round[] rounds, Tile backgroundTile, int lifes, int gold, int loopCount) {
 		this.backgroundTile = backgroundTile;
 		this.gold = gold;
+		this.loopCount = loopCount;
 		this.lifes = lifes;
 		HUD.displayResources(gold, lifes);
 		this.sm = sm;
 		init();
 		this.rounds = rounds;
+		roundCount = rounds.length * loopCount;
 	}
 	
 	@Override
@@ -99,7 +100,7 @@ public class levelPlayer extends GameState {
 				return;
 			}
 		}
-		Round currentRound = rounds[this.currentRoundIndex];
+		Round currentRound = rounds[getCurrentRoundIndex()];
 		if (currentRound.reachedEnd()) {
 			if (enemyHandler.isEmpty()) {
 				if (!collectedGold) {
@@ -114,8 +115,8 @@ public class levelPlayer extends GameState {
 				collectedGold = false;
 				time = sleepTime + 1;
 				this.currentRoundIndex++;
-				if (this.currentRoundIndex < rounds.length) {
-					currentRound = rounds[this.currentRoundIndex];					
+				if (getCurrentRoundIndex() < rounds.length) {
+					currentRound = rounds[getCurrentRoundIndex()];					
 				}
 			}
 		}else {
@@ -126,13 +127,29 @@ public class levelPlayer extends GameState {
 			time = 0;
 			Enemy[] newEnemies = currentRound.getWave(map);
 			for (Enemy e: newEnemies) {
-				e.setRoundScaling(currentRoundIndex);
+				e.setRoundScaling(getCurrentRoundIndex());
 			}
 			enemyHandler.addEnemyWave(newEnemies);
 		}
-		if (this.currentRoundIndex >= rounds.length - 1 && enemyHandler.isEmpty() ) {
-			setVictory();
+		if (getCurrentRoundIndex() >= rounds.length - 1 && enemyHandler.isEmpty() && currentRound.reachedEnd()) {
+			if (loopCount-- > 1) {
+				for (Round r: rounds) {
+					r.reset();
+				}
+				++currentRoundIndex;
+				roundOffset = currentRoundIndex;
+				System.out.println(currentRoundIndex + " " + roundOffset);
+				collectedGold = false;
+				time = 0;
+				startup = true;
+			}else {
+				setVictory();
+			}
 		}
+	}
+	
+	private int getCurrentRoundIndex() {
+		return currentRoundIndex - roundOffset;
 	}
 	
 	private void setVictory() {
@@ -173,12 +190,12 @@ public class levelPlayer extends GameState {
 		
 		HUD.drawEndScreen(g2);
 		g2.setColor(Color.WHITE);
-		HUD.drawCenteredText(g2, currentRoundIndex + 1 + "", 555, 785, 32);
-		HUD.drawCenteredText(g2, rounds.length + "", 665, 785, 32);;
+		HUD.drawCenteredText(g2,  (currentRoundIndex + 1) + "", 555, 785, 32);
+		HUD.drawCenteredText(g2, roundCount + "", 665, 785, 32);;
 		
 		if (!victory) {
 			g2.setColor(Color.BLACK);
-			Round currentRound = rounds[this.currentRoundIndex];
+			Round currentRound = rounds[getCurrentRoundIndex()];
 			String cornerMessage = ""; 
 			if (startup) {
 				cornerMessage = "Starting in " + ((startUpPauseTime - time)/Game.tps + 1) + " s";
